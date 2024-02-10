@@ -1,3 +1,4 @@
+import { embaralhar } from "@/functions/arrays";
 import RespostaModel from "./resposta";
 
 export default class QuestaoModel {
@@ -42,11 +43,23 @@ export default class QuestaoModel {
     return false;
   }
 
+  embaralharRespostas(): QuestaoModel {
+    let respostasEmbaralhadas = embaralhar(this.#respostas);
+    return new QuestaoModel(
+      this.#id,
+      this.#enunciado,
+      respostasEmbaralhadas,
+      this.#acertou
+    );
+  }
+
   converterParaObjeto() {
     return {
       id: this.#id,
       enunciado: this.#enunciado,
-      respostas: this.#respostas.map(resposta => resposta.converterParaObjeto()),
+      respostas: this.#respostas.map((resposta) =>
+        resposta.converterParaObjeto()
+      ),
       acertou: this.#acertou,
     };
   }
