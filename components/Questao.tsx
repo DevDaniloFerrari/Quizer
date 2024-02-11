@@ -13,7 +13,13 @@ export default function Questao(props: QuestaoProps) {
   function renderizarResposta() {
     return questao.respostas.map((resposta, i) => {
       return (
-        <Resposta valor={resposta} indice={i} letra="A" corLetra="#F2C886" />
+        <Resposta
+          key={i}
+          valor={resposta}
+          indice={i}
+          letra="A"
+          corFundoLetra="#F2C886"
+        />
       );
     });
   }
