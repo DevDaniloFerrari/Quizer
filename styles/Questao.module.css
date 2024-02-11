@@ -1,3 +1,4 @@
 .questao {
   display: flex;
+  flex-direction: column;
 }
