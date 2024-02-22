@@ -1,4 +1,5 @@
 "use client";
+import Botao from "@/components/Botao";
 import Questao from "@/components/Questao";
 import QuestaoModel from "@/model/questao";
 import RespostaModel from "@/model/resposta";
@@ -18,14 +19,14 @@ export default function Home() {
   }
 
   function tempoEsgotado() {
-    if (questao.naoRespondida) 
-      setQuestao(questao.responderCom(-1));
+    if (questao.naoRespondida) setQuestao(questao.responderCom(-1));
   }
 
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
@@ -37,6 +38,7 @@ export default function Home() {
         tempoEsgotado={tempoEsgotado}
         tempoParaResposta={5}
       />
+      <Botao texto="Próxima" href="/resultado" />
     </div>
   );
 }

@@ -36,9 +36,9 @@ export default class QuestaoModel {
   }
 
   get respondida() {
-    this.#respostas.forEach((resposta) => {
+    for (let resposta of this.#respostas) {
       if (resposta.revelada) return true;
-    });
+    }
 
     return false;
   }
@@ -46,8 +46,10 @@ export default class QuestaoModel {
   get naoRespondida() {
     return !this.respondida;
   }
-  
+
   responderCom(indice: number): QuestaoModel {
+    if (this.respondida) return this;
+
     const acertou = this.#respostas[indice]?.certa;
     const respostas = this.#respostas.map((resposta, i) => {
       const respostaSelecionada = indice === i;
