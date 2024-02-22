@@ -1,3 +1,4 @@
+'use client'
 import QuestaoModel from "@/model/questao";
 import styles from "@/styles/Questao.module.css";
 import Enunciado from "./Enunciado";
@@ -12,6 +13,7 @@ const letras = [
 
 interface QuestaoProps {
   valor: QuestaoModel;
+  respostaFornecida: (indice: number) => void
 }
 
 export default function Questao(props: QuestaoProps) {
@@ -27,6 +29,7 @@ export default function Questao(props: QuestaoProps) {
           indice={i}
           letra={letra.valor}
           corFundoLetra={letra.cor}
+          respostaFornecida={props.respostaFornecida}
         />
       );
     });
