@@ -26,7 +26,8 @@ export default function Home() {
   async function carregarQuestao(idQuestao: number) {
     const resposta = await fetch(`${BASE_URL}/questoes/${idQuestao}`);
     const json = await resposta.json();
-    console.log(json)
+    const novaQuestao = QuestaoModel.criarUsandoObjeto(json);
+    setQuestao(novaQuestao)
   }
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    idsDasQuestoes.length > 0 && carregarQuestao(idsDasQuestoes[0])
+    idsDasQuestoes.length > 0 && carregarQuestao(idsDasQuestoes[0]);
   }, [idsDasQuestoes]);
 
   function questaoRespondida(questao: QuestaoModel) {}
