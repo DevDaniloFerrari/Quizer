@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "url";
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://quiz-nine-lovat.vercel.app/api";
 
 export default function Home() {
   const router = useRouter();
