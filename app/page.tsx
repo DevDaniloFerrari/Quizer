@@ -1,85 +1,31 @@
 "use client";
-import Questionario from "@/components/Questionario";
-import QuestaoModel from "@/model/questao";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { format } from "url";
+import Botao from "@/components/Botao";
 import IconeGithub from "@/components/IconeGithub";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import styles from "@/styles/Home.module.css";
+import { useState } from "react";
 
 export default function Home() {
-  const router = useRouter();
-  const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
-  const [questao, setQuestao] = useState<QuestaoModel>();
-  const [respostasCertas, setRespostasCertas] = useState<number>(0);
+  const [quantidadePerguntas, setQuantidadePerguntas] = useState(10);
 
-  async function carregarIdsDasQuestoes() {
-    const resposta = await fetch(`${BASE_URL}/questionario`);
-    const idsDasQuestoes = await resposta.json();
-    setIdsDasQuestoes(idsDasQuestoes);
-  }
-
-  async function carregarQuestao(idQuestao: number) {
-    const resposta = await fetch(`${BASE_URL}/questoes/${idQuestao}`);
-    const json = await resposta.json();
-    const novaQuestao = QuestaoModel.criarUsandoObjeto(json);
-    setQuestao(novaQuestao);
-  }
-
-  useEffect(() => {
-    carregarIdsDasQuestoes();
-  }, []);
-
-  useEffect(() => {
-    idsDasQuestoes.length > 0 && carregarQuestao(idsDasQuestoes[0]);
-  }, [idsDasQuestoes]);
-
-  function questaoRespondida(questaoRespondida: QuestaoModel) {
-    setQuestao(questaoRespondida);
-    const acertou = questaoRespondida.acertou;
-    setRespostasCertas(respostasCertas + (acertou ? 1 : 0));
-  }
-
-  function idProximaPergunta() {
-    if (questao) {
-      const proximoIndice = idsDasQuestoes.indexOf(questao.id) + 1;
-      return idsDasQuestoes[proximoIndice];
-    }
-  }
-
-  function irParaProximoPasso() {
-    const proximoId = idProximaPergunta();
-    proximoId ? irParaProximaQuestao(proximoId) : finalizar();
-  }
-
-  function irParaProximaQuestao(proximoId: number) {
-    carregarQuestao(proximoId);
-  }
-
-  function finalizar() {
-    const url = format({
-      pathname: "/resultado",
-      query: {
-        total: idsDasQuestoes.length,
-        certas: respostasCertas,
-      },
-    });
-
-    router.push(url);
-  }
-
-  return questao ? (
-    <>
-      <Questionario
-        questao={questao}
-        ultima={idProximaPergunta() === undefined}
-        questaoRespondida={questaoRespondida}
-        irParaProximoPasso={irParaProximoPasso}
+  return (
+    <div className={styles.home}>
+      <h1>Quizer</h1>
+      <label className={styles.input}>
+        Quantidade de Perguntas:
+        <input
+          className={styles.quantidade}
+          type="number"
+          min={1}
+          max={30}
+          value={quantidadePerguntas}
+          onChange={(event) => setQuantidadePerguntas(+event.target.value)}
+        />
+      </label>
+      <Botao
+        texto="Iniciar"
+        href={`/perguntas?quantidadePerguntas=${quantidadePerguntas}`}
       />
       <IconeGithub />
-    </>
-  ) : (
-    false
+    </div>
   );
 }

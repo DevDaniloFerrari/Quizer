@@ -4,6 +4,8 @@ html,
 body {
   background-color: #6c54d8;
   color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
 * {
