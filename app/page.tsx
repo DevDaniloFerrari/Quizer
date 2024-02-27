@@ -4,6 +4,7 @@ import QuestaoModel from "@/model/questao";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "url";
+import IconeGithub from "@/components/IconeGithub";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -41,7 +42,7 @@ export default function Home() {
   }
 
   function idProximaPergunta() {
-    if(questao){
+    if (questao) {
       const proximoIndice = idsDasQuestoes.indexOf(questao.id) + 1;
       return idsDasQuestoes[proximoIndice];
     }
@@ -69,12 +70,15 @@ export default function Home() {
   }
 
   return questao ? (
-    <Questionario
-      questao={questao}
-      ultima={idProximaPergunta() === undefined}
-      questaoRespondida={questaoRespondida}
-      irParaProximoPasso={irParaProximoPasso}
-    />
+    <>
+      <Questionario
+        questao={questao}
+        ultima={idProximaPergunta() === undefined}
+        questaoRespondida={questaoRespondida}
+        irParaProximoPasso={irParaProximoPasso}
+      />
+      <IconeGithub />
+    </>
   ) : (
     false
   );

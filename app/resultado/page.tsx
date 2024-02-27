@@ -1,6 +1,7 @@
 "use client";
 import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
+import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Resultado.module.css";
 
 export default function resultado({
@@ -16,10 +17,15 @@ export default function resultado({
       <h1>Resultado Final</h1>
       <div style={{ display: "flex" }}>
         <Estatistica texto="Perguntas" valor={total} />
-        <Estatistica texto="Certas" valor={certas} corFundo="#9CD2A4"/>
-        <Estatistica texto="Percentual" valor={`${percentual}%`} corFundo="#DE6A33"/>
+        <Estatistica texto="Certas" valor={certas} corFundo="#9CD2A4" />
+        <Estatistica
+          texto="Percentual"
+          valor={`${percentual}%`}
+          corFundo="#DE6A33"
+        />
       </div>
-      <Botao href="/" texto="Tentar Novamente"/>
+      <Botao href="/" texto="Tentar Novamente" />
+      <IconeGithub />
     </div>
   );
 }
