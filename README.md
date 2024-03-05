@@ -21,7 +21,7 @@
 Nós estamos abertos para contribuições!
 
 - Se você gostar do projeto, <strong>de uma estreja no repositório </strong> ⭐
-- Se você está interessado em contribuir leia o nosso Guia [Guia de Contribuição]()
+- Se você está interessado em contribuir leia o nosso Guia [Guia de Contribuição](https://github.com/DevDaniloFerrari/Quizer/blob/master/CONTRIBUTING.md)
 
 Para rodar o projeto localmente utilize o comando `npm run dev`.
 
