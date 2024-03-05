@@ -2,7 +2,7 @@
  <img width="300" alt="quizer" src="https://github.com/DevDaniloFerrari/Quizer/assets/40414119/44f40c93-d18b-41ec-af30-acbfc6fb37b5">
 </div>
 
-<p align="center">O **Quizer** é um projeto feito para ajudar novos devs a se desenvolverem 👌 </br>
+<p align="center">Um projeto feito para ajudar novos devs a se desenvolverem 👌 </br>
 <strong><a href="https://quiz-nine-lovat.vercel.app/">Veja uma demonstração aqui</a></strong>
 </p>
 
