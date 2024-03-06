@@ -5,9 +5,15 @@ import Botao from "./Botao";
 
 interface QuestionarioProps {
   questao: QuestaoModel;
+  numero: NumeroQuestoes;
   ultima: boolean;
   questaoRespondida: (questao: QuestaoModel) => void;
   irParaProximoPasso: () => void;
+}
+
+type NumeroQuestoes = {
+  atual: number,
+  total: number
 }
 
 export default function Questionario(props: QuestionarioProps) {
@@ -21,6 +27,7 @@ export default function Questionario(props: QuestionarioProps) {
     <div className={styles.questionario}>
       {props.questao ? (
         <Questao
+          numero={props.numero}
           valor={props.questao}
           tempoParaResposta={10}
           respostaFornecida={respostaFornecida}

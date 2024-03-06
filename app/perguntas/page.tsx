@@ -20,6 +20,7 @@ export default function Perguntas(props: PerguntaProps) {
   const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
   const [questao, setQuestao] = useState<QuestaoModel>();
   const [respostasCertas, setRespostasCertas] = useState<number>(0);
+  const [numeroQuestao, setNumeroQuestao] = useState<number>(1);
 
   async function carregarIdsDasQuestoes() {
     const resposta = await fetch(`${BASE_URL}/questionario`);
@@ -62,6 +63,8 @@ export default function Perguntas(props: PerguntaProps) {
 
   function irParaProximaQuestao(proximoId: number) {
     carregarQuestao(proximoId);
+    const novoNumero = numeroQuestao + 1;
+    setNumeroQuestao(novoNumero);
   }
 
   function finalizar() {
@@ -79,6 +82,7 @@ export default function Perguntas(props: PerguntaProps) {
   return questao ? (
     <>
       <Questionario
+        numero={{ atual: numeroQuestao, total: quantidadePerguntas }}
         questao={questao}
         ultima={idProximaPergunta() === undefined}
         questaoRespondida={questaoRespondida}
