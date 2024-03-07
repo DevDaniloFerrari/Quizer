@@ -25,6 +25,11 @@ Nós estamos abertos para contribuições!
 
 Para rodar o projeto localmente utilize o comando `npm run dev`.
 
+## Contribuidores
+<a href="https://github.com/DevDaniloFerrari/Quizer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=DevDaniloFerrari/Quizer" />
+</a>
+
 ## :hammer_and_wrench: Tecnologias
 
 - 💙 [Typescript](https://www.typescriptlang.org/)
