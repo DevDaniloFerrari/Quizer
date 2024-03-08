@@ -25,10 +25,17 @@ Nós estamos abertos para contribuições!
 
 Para rodar o projeto localmente utilize o comando `npm run dev`.
 
-## Contribuidores
-<a href="https://github.com/DevDaniloFerrari/Quizer/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=DevDaniloFerrari/Quizer" />
-</a>
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+[![All Contributors](https://img.shields.io/github/all-contributors/DevDaniloFerrari/Quizer?color=ee8449&style=flat-square)](#contributors)
 
 ## :hammer_and_wrench: Tecnologias
 
