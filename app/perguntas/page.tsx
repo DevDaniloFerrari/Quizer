@@ -1,7 +1,7 @@
 "use client";
 import Questionario from "@/components/Questionario";
 import QuestaoModel from "@/model/questao";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "url";
 import IconeGithub from "@/components/IconeGithub";
@@ -15,6 +15,7 @@ interface PerguntaProps {
 }
 
 export default function Perguntas(props: PerguntaProps) {
+  const carregarIdsRef = useRef(carregarIdsDasQuestoes);
   const { quantidadePerguntas } = props.searchParams;
   const router = useRouter();
   const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
@@ -36,7 +37,9 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   useEffect(() => {
-    carregarIdsDasQuestoes();
+  
+   carregarIdsRef.current();
+    
   }, []);
 
   useEffect(() => {
