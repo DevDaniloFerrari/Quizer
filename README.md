@@ -42,7 +42,6 @@ Para rodar o projeto localmente utilize o comando `npm run dev`.
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-[![All Contributors](https://img.shields.io/github/all-contributors/DevDaniloFerrari/Quizer?color=ee8449&style=flat-square)](#contributors)
 
 ## :hammer_and_wrench: Tecnologias
 
