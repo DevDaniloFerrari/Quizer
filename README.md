@@ -30,6 +30,13 @@ Para rodar o projeto localmente utilize o comando `npm run dev`.
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DevDaniloFerrari"><img src="https://avatars.githubusercontent.com/u/40414119?v=4?s=100" width="100px;" alt="Danilo Ferrari"/><br /><sub><b>Danilo Ferrari</b></sub></a><br /><a href="#code-DevDaniloFerrari" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
