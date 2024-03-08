@@ -25,7 +25,7 @@ Nós estamos abertos para contribuições!
 
 Para rodar o projeto localmente utilize o comando `npm run dev`.
 
-## Contributors
+## Contribuidores
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
