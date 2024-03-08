@@ -1,4 +1,21 @@
 {
   "projectName": "Quizer",
-  "projectOwner": "DevDaniloFerrari"
+  "projectOwner": "DevDaniloFerrari",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "BeaGoddess",
+      "name": "Beatriz Silva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80004550?v=4",
+      "profile": "https://github.com/BeaGoddess",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
 }
