@@ -36,11 +36,9 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   useEffect(() => {
-    const carregarIds = async () => {
-      await carregarIdsRef.current();
-    };
-
-    carregarIds();
+  
+   carregarIdsRef.current();
+    
   }, []);
 
   useEffect(() => {
