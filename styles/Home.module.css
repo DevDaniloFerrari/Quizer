@@ -15,3 +15,9 @@
   display: flex;
   gap: 5px;
 }
+
+.separador {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
