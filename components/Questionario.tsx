@@ -7,6 +7,7 @@ interface QuestionarioProps {
   questao: QuestaoModel;
   numero: NumeroQuestoes;
   ultima: boolean;
+  tempo: number;
   questaoRespondida: (questao: QuestaoModel) => void;
   irParaProximoPasso: () => void;
 }
@@ -29,7 +30,7 @@ export default function Questionario(props: QuestionarioProps) {
         <Questao
           numero={props.numero}
           valor={props.questao}
-          tempoParaResposta={10}
+          tempoParaResposta={props.tempo}
           respostaFornecida={respostaFornecida}
           tempoEsgotado={props.irParaProximoPasso}
         />

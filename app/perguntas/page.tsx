@@ -11,12 +11,13 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 interface PerguntaProps {
   searchParams: {
     quantidadePerguntas: number;
+    duracaoPerguntas: number;
   };
 }
 
 export default function Perguntas(props: PerguntaProps) {
   const carregarIdsRef = useRef(carregarIdsDasQuestoes);
-  const { quantidadePerguntas } = props.searchParams;
+  const { quantidadePerguntas, duracaoPerguntas } = props.searchParams;
   const router = useRouter();
   const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([]);
   const [questao, setQuestao] = useState<QuestaoModel>();
@@ -37,9 +38,7 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   useEffect(() => {
-  
    carregarIdsRef.current();
-    
   }, []);
 
   useEffect(() => {
@@ -87,6 +86,7 @@ export default function Perguntas(props: PerguntaProps) {
       <Questionario
         numero={{ atual: numeroQuestao, total: quantidadePerguntas }}
         questao={questao}
+        tempo={Number(duracaoPerguntas)}
         ultima={idProximaPergunta() === undefined}
         questaoRespondida={questaoRespondida}
         irParaProximoPasso={irParaProximoPasso}
