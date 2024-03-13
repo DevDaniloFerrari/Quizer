@@ -4,6 +4,7 @@ import QuestaoModel from "@/model/questao";
 import { collection, getDocs } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic'
 export async function GET() {
   const querySnapshot = await getDocs(collection(db, "questoes"));
   const questoes = querySnapshot.docs.map((doc) =>
