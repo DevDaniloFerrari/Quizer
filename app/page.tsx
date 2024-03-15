@@ -4,9 +4,16 @@ import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Home.module.css";
 import { useState } from "react";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function Home() {
   const [quantidadePerguntas, setQuantidadePerguntas] = useState(10);
   const [duracaoPerguntas, setDuracaoPerguntas] = useState(10);
+
+  async function gerarQuestao() {
+    const resposta = await fetch(`${BASE_URL}/questoes`, { method: "POST" });
+    const response = await resposta.json();
+  }
 
   return (
     <div className={styles.home}>
@@ -39,6 +46,7 @@ export default function Home() {
         texto="Iniciar"
         href={`/perguntas?quantidadePerguntas=${quantidadePerguntas}&duracaoPerguntas=${duracaoPerguntas}`}
       />
+      <Botao texto="Gerar questão" onClick={() => gerarQuestao()} />
       <IconeGithub />
     </div>
   );
