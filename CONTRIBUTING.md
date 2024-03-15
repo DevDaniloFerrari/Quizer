@@ -8,10 +8,11 @@ Para executar o projeto localmente:
 
 1. Clone ou faça um fork do repositório.
 2. Execute `npm install` para instalar as dependências.
-3. Crie um arquivo `.env.local` na raiz do projeto e adicione a seguinte variável de ambiente:
+3. Crie um arquivo `.env.local` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
 ```
 NEXT_PUBLIC_BASE_URL=http://localhost:3000/api
+USAR_ARQUIVO_DE_DADOS=true
 ```
 
 4. Execute `npm run dev` para iniciar o servidor de desenvolvimento.
