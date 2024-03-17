@@ -24,7 +24,7 @@ export default function Home() {
           <input
             className={styles.quantidade}
             type="number"
-            min={1}
+            min={10}
             max={30}
             value={quantidadePerguntas}
             onChange={(event) => setQuantidadePerguntas(+event.target.value)}

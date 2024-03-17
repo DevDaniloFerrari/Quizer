@@ -1,7 +1,7 @@
 import QuestaoModel from "@/model/questao";
 import RespostaModel from "@/model/resposta";
 
-const questoes: QuestaoModel[] = [
+const questoesLocal: QuestaoModel[] = [
   new QuestaoModel(
     1,
     'Qual fruto é conhecido no Norte e Nordeste como "jerimum"?',
@@ -192,4 +192,4 @@ const questoes: QuestaoModel[] = [
   ]),
 ];
 
-export default questoes;
+export default questoesLocal;

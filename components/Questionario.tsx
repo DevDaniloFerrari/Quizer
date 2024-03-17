@@ -27,20 +27,22 @@ export default function Questionario(props: QuestionarioProps) {
   return (
     <div className={styles.questionario}>
       {props.questao ? (
-        <Questao
-          numero={props.numero}
-          valor={props.questao}
-          tempoParaResposta={props.tempo}
-          respostaFornecida={respostaFornecida}
-          tempoEsgotado={props.irParaProximoPasso}
-        />
+        <>
+          <Questao
+            numero={props.numero}
+            valor={props.questao}
+            tempoParaResposta={props.tempo}
+            respostaFornecida={respostaFornecida}
+            tempoEsgotado={props.irParaProximoPasso}
+          />
+          <Botao
+            onClick={props.irParaProximoPasso}
+            texto={props.ultima ? "Finalizar" : "Próxima"}
+          />
+        </>
       ) : (
-        false
+        null
       )}
-      <Botao
-        onClick={props.irParaProximoPasso}
-        texto={props.ultima ? "Finalizar" : "Próxima"}
-      />
     </div>
   );
 }
