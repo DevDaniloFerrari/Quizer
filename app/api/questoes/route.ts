@@ -6,6 +6,12 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 export async function POST() {
+  if (!process.env.OPENAI_API_KEY)
+    return NextResponse.json({
+      mensagem:
+        "Nosso gerador de perguntas com inteligência artificial ainda está em fase testes!",
+    });
+
   const querySnapshot = await getDocs(collection(db, "questoes"));
   const questoesFirebase = querySnapshot.docs.map((doc) =>
     QuestaoModel.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
@@ -46,9 +52,8 @@ export async function POST() {
     const questao = JSON.parse(response.data.choices[0].message.content);
 
     await addDoc(collection(db, "questoes"), questao);
+    return NextResponse.json({ mensagem: "Questão gerada com sucesso!" });
   } catch (error) {
-    console.error("Error: ", error);
+    return NextResponse.json({ mensagem: "Erro ao gerar questão!" });
   }
-
-  return NextResponse.json([]);
 }

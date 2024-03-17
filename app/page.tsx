@@ -3,6 +3,7 @@ import Botao from "@/components/Botao";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Home.module.css";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -13,7 +14,21 @@ export default function Home() {
   async function gerarQuestao() {
     const resposta = await fetch(`${BASE_URL}/questoes`, { method: "POST" });
     const response = await resposta.json();
+
+    if (!process.env.OPENAI_API_KEY) {
+      notificar(response.mensagem);
+      return;
+    }
   }
+
+  const notificar = (mensagem: string) =>
+    toast(
+      mensagem,
+      {
+        type: "info",
+        style: { fontSize: "1rem" },
+      }
+    );
 
   return (
     <div className={styles.home}>
@@ -48,6 +63,7 @@ export default function Home() {
       />
       <Botao texto="Gerar questão" onClick={() => gerarQuestao()} />
       <IconeGithub />
+      <ToastContainer />
     </div>
   );
 }
