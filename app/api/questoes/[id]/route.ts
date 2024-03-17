@@ -1,20 +1,23 @@
-import { db } from "@/firebase";
+import questoesLocal from "@/data/bancoDeQuestoes";
+import { getQuestoesFirebase } from "@/model/firebase";
 import QuestaoModel from "@/model/questao";
-import { collection, getDocs } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic'
 export async function GET(request: any, { params }: any) {
-  const querySnapshot = await getDocs(collection(db, "questoes"));
-  const questoes = querySnapshot.docs.map((doc) =>
-    QuestaoModel.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
-  );
 
-  const id = +params.id;
-  const questoesFiltradas = questoes.filter((questao) => questao.id === id);
-  if (questoesFiltradas.length === 1)
+  const questoes = process.env.USAR_ARQUIVO_DE_DADOS ? questoesLocal : await getQuestoesFirebase();
+
+  const questaoFiltrada = getQuestaoFiltrada(questoes, +params.id);
+
+  return questaoFiltrada;
+}
+
+function getQuestaoFiltrada(questoes: QuestaoModel[], id: number) {
+  const questaoFiltrada = questoes.find((questao) => questao.id === id);
+  if (questaoFiltrada)
     return NextResponse.json(
-      questoesFiltradas[0].embaralharRespostas().converterParaObjeto()
+      questaoFiltrada.embaralharRespostas().converterParaObjeto()
     );
   return NextResponse.json([]);
 }
