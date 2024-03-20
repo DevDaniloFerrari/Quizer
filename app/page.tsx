@@ -15,8 +15,8 @@ import { navegarPorLink } from "@/functions/utils";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 type FormData = {
-  perguntas: number
-  duracao: number
+  perguntas?: number
+  duracao?: number
 }
 
 export default function Home() {
