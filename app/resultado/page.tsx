@@ -1,10 +1,11 @@
 "use client";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import html2canvas from "html2canvas";
 import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Resultado.module.css";
+import { navegarPorLink } from "@/functions/utils";
 
 export default function Resultado({
   searchParams,
@@ -13,9 +14,17 @@ export default function Resultado({
 }) {
   const { total, certas } = searchParams;
   const percentual = Math.round((certas / total) * 100);
+  const [loading, setLoading] = useState(false);
+  const [loadingJogarNovamente, setLoadingJogarNovamente] = useState(false);
+
+  const jogarNovamente = () => {
+    setLoadingJogarNovamente(true);
+    navegarPorLink("/");
+  }
 
   const capturarScreenshot = useCallback(async () => {
     try {
+      setLoading(true);
       const canvas = await html2canvas(document.body),
         imageData = canvas.toDataURL("image/jpeg"),
         downloadLink = document.createElement("a");
@@ -27,6 +36,9 @@ export default function Resultado({
 
     } catch {
       console.error("Erro ao obter screenshot");
+    }
+    finally {
+      setLoading(false);
     }
   }, []);
 
@@ -42,8 +54,8 @@ export default function Resultado({
           corFundo="#DE6A33"
         />
       </div>
-      <Botao href="/" texto="Tentar Novamente" />
-      <Botao texto="Baixar Resultado" onClick={capturarScreenshot} />
+      <Botao texto="Tentar Novamente" onClick={jogarNovamente} loading={loadingJogarNovamente} />
+      <Botao texto="Baixar Resultado" onClick={capturarScreenshot} loading={loading} />
       <IconeGithub />
     </div>
   );

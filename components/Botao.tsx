@@ -1,24 +1,24 @@
-import Link from "next/link";
+import { LoadingButton } from "@mui/lab";
 import styles from "../styles/Botao.module.css";
 
 interface BotaoProps {
   href?: string;
   texto: string;
+  loading?: boolean;
+  type?: 'submit' | 'button';
   onClick?: (event: any) => void;
 }
 
 export default function Botao(props: BotaoProps) {
-  function renderizarBotao() {
     return (
-      <button className={styles.botao} onClick={props.onClick}>
+      <LoadingButton 
+        variant="contained" 
+        className={styles.botao} 
+        onClick={props.onClick} 
+        loading={props.loading}
+        disabled={props.loading}
+        type={props.type || 'button'}>
         {props.texto}
-      </button>
+      </LoadingButton>
     );
-  }
-
-  return props.href ? (
-    <Link href={props.href}>{renderizarBotao()}</Link>
-  ) : (
-    renderizarBotao()
-  );
 }

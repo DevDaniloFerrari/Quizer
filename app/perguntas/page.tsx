@@ -22,6 +22,7 @@ export default function Perguntas(props: PerguntaProps) {
   const [questao, setQuestao] = useState<QuestaoModel>();
   const [respostasCertas, setRespostasCertas] = useState<number>(0);
   const [numeroQuestao, setNumeroQuestao] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const [questoes, setQuestoes] = useState<QuestaoModel[]>([]);
 
   const quantidadePerguntas = Math.min(Math.max(Number(props.searchParams.quantidadePerguntas), 10), 30);
@@ -84,6 +85,7 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   function finalizar() {
+    setLoading(true);
     const url = format({
       pathname: "/resultado",
       query: {
@@ -102,6 +104,7 @@ export default function Perguntas(props: PerguntaProps) {
         questao={questao}
         tempo={Number(duracaoPerguntas)}
         ultima={numeroQuestao < questoes.length === false}
+        loading={loading}
         questaoRespondida={questaoRespondida}
         irParaProximoPasso={idProximaPergunta}
       />

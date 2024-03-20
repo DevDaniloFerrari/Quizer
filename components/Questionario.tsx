@@ -7,6 +7,7 @@ interface QuestionarioProps {
   questao: QuestaoModel;
   numero: NumeroQuestoes;
   ultima: boolean;
+  loading: boolean;
   tempo: number;
   questaoRespondida: (questao: QuestaoModel) => void;
   irParaProximoPasso: () => void;
@@ -38,6 +39,7 @@ export default function Questionario(props: QuestionarioProps) {
           <Botao
             onClick={props.irParaProximoPasso}
             texto={props.ultima ? "Finalizar" : "Próxima"}
+            loading={props.loading}
           />
         </>
       ) : (
