@@ -11,7 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.13",
+    "@hookform/resolvers": "^3.3.4",
+    "@mui/lab": "^5.0.0-alpha.169",
+    "@mui/material": "^5.15.14",
     "axios": "^1.6.8",
     "firebase": "^10.8.1",
     "html2canvas": "^1.4.1",
@@ -20,7 +22,9 @@
     "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18",
     "react-github-corner": "^2.5.0",
-    "react-toastify": "^10.0.5"
+    "react-hook-form": "^7.51.1",
+    "react-toastify": "^10.0.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
