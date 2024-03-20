@@ -1,0 +1,15 @@
+.card {
+    display: flex;
+    border: 1px white solid;
+    height: 50px;
+    width: 400px;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    height: 30px;
+    width: 30px;
+}

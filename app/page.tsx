@@ -113,6 +113,7 @@ export default function Home() {
           </>
           <Botao texto="Iniciar" type="submit" loading={loading} />
           <Botao texto="Gerar questão" onClick={gerarQuestao} loading={loadingGerarQuestoes} />
+          <Botao texto="Classificação" href="/classificacao" />
         </div>
       </form>
       <IconeGithub />
