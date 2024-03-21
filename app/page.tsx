@@ -5,32 +5,42 @@ import CircularProgress from "@mui/material/CircularProgress";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { useForm, SubmitHandler } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import CustomInput from "@/components/Input";
 import { getStylesForm } from "@/styles/Input-styles";
 import { formInicial } from "./forms/schemas";
 import { navegarPorLink } from "@/functions/utils";
+import AvatarUsuario from "@/components/AvatarUsuario";
+import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
+import useAuth from "@/data/hook/useAuth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 type FormData = {
-  perguntas?: number
-  duracao?: number
-}
+  perguntas?: number;
+  duracao?: number;
+};
 
 export default function Home() {
   const [valoresPadroes, setValoresPadroes] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingGerarQuestoes, setLoadingGerarQuestoes] = useState(false);
+  const { usuario, logout } = useAuth();
 
-  const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: yupResolver(formInicial),
   });
 
   useEffect(() => {
-    setValue('perguntas', 10);
-    setValue('duracao', 10);
+    setValue("perguntas", 10);
+    setValue("duracao", 10);
   }, [setValue]);
 
   useEffect(() => {
@@ -44,12 +54,13 @@ export default function Home() {
     }
 
     return setValoresPadroes(false);
-
   }, [getValues]);
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     setLoading(true);
-    navegarPorLink(`/perguntas?quantidadePerguntas=${data.perguntas}&duracaoPerguntas=${data.duracao}`);
+    navegarPorLink(
+      `/perguntas?quantidadePerguntas=${data.perguntas}&duracaoPerguntas=${data.duracao}`
+    );
   };
 
   const gerarQuestao = async () => {
@@ -62,31 +73,42 @@ export default function Home() {
         notificar(response.mensagem);
       }
     } catch {
-      alert('Erro ao gerar questão!');
+      alert("Erro ao gerar questão!");
+    } finally {
+      setLoadingGerarQuestoes(false);
     }
-    finally {
-      setLoadingGerarQuestoes(false)
-    }
-  }
+  };
 
   const notificar = (mensagem: string) =>
-    toast(
-      mensagem,
-      {
-        type: "info",
-        style: { fontSize: "1rem" },
-      }
-    );
+    toast(mensagem, {
+      type: "info",
+      style: { fontSize: "1rem" },
+    });
 
   if (!valoresPadroes) {
-    return <div className={styles.home}>
-      <CircularProgress style={{ height: 100, width: 100, color: '#33ccff' }} />
-    </div>
+    return (
+      <div className={styles.home}>
+        <CircularProgress
+          style={{ height: 100, width: 100, color: "#33ccff" }}
+        />
+      </div>
+    );
   }
 
   return (
     <div className={styles.home}>
-      <h1>Quizer</h1>
+      <div className={styles.cabecalho}>
+        <h1>Quizer</h1>
+        {usuario && (
+          <ArrowLeftEndOnRectangleIcon
+            onClick={logout}
+            className="h-6 absolute right-24 cursor-pointer"
+          />
+        )}
+        <div className={styles.avatarUsuario}>
+          <AvatarUsuario />
+        </div>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.separador}>
           <>
@@ -96,7 +118,7 @@ export default function Home() {
                 type: "number",
                 error: errors.perguntas ? true : false,
                 helperText: errors.perguntas?.message,
-                sx: getStylesForm(errors.perguntas)
+                sx: getStylesForm(errors.perguntas),
               }}
               register={register("perguntas")}
             />
@@ -106,13 +128,17 @@ export default function Home() {
                 type: "number",
                 error: errors.duracao ? true : false,
                 helperText: errors.duracao?.message,
-                sx: getStylesForm(errors.duracao)
+                sx: getStylesForm(errors.duracao),
               }}
               register={register("duracao")}
             />
           </>
           <Botao texto="Iniciar" type="submit" loading={loading} />
-          <Botao texto="Gerar questão" onClick={gerarQuestao} loading={loadingGerarQuestoes} />
+          <Botao
+            texto="Gerar questão"
+            onClick={gerarQuestao}
+            loading={loadingGerarQuestoes}
+          />
           <Botao texto="Classificação" href="/classificacao" />
         </div>
       </form>
