@@ -5,7 +5,6 @@ import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Resultado.module.css";
-import { navegarPorLink } from "@/functions/utils";
 
 export default function Resultado({
   searchParams,
@@ -15,12 +14,6 @@ export default function Resultado({
   const { total, certas } = searchParams;
   const percentual = Math.round((certas / total) * 100);
   const [loading, setLoading] = useState(false);
-  const [loadingJogarNovamente, setLoadingJogarNovamente] = useState(false);
-
-  const jogarNovamente = () => {
-    setLoadingJogarNovamente(true);
-    navegarPorLink("/");
-  }
 
   const capturarScreenshot = useCallback(async () => {
     try {
@@ -54,7 +47,7 @@ export default function Resultado({
           corFundo="#DE6A33"
         />
       </div>
-      <Botao texto="Tentar Novamente" onClick={jogarNovamente} loading={loadingJogarNovamente} />
+      <Botao texto="Tentar Novamente" href="/"/>
       <Botao texto="Baixar Resultado" onClick={capturarScreenshot} loading={loading} />
       <IconeGithub />
     </div>

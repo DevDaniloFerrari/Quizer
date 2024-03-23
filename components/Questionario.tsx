@@ -11,6 +11,7 @@ interface QuestionarioProps {
   tempo: number;
   questaoRespondida: (questao: QuestaoModel) => void;
   irParaProximoPasso: () => void;
+  desistir: () => void;
 }
 
 type NumeroQuestoes = {
@@ -35,6 +36,7 @@ export default function Questionario(props: QuestionarioProps) {
             tempoParaResposta={props.tempo}
             respostaFornecida={respostaFornecida}
             tempoEsgotado={props.irParaProximoPasso}
+            desistir={props.desistir}
           />
           <Botao
             onClick={props.irParaProximoPasso}
