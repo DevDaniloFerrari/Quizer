@@ -103,10 +103,11 @@ export default function Perguntas(props: PerguntaProps) {
         numero={{ atual: numeroQuestao, total: quantidadePerguntas }}
         questao={questao}
         tempo={Number(duracaoPerguntas)}
-        ultima={numeroQuestao < questoes.length === false}
+        ultima={!(numeroQuestao < questoes.length)}
         loading={loading}
         questaoRespondida={questaoRespondida}
         irParaProximoPasso={idProximaPergunta}
+        desistir={finalizar}
       />
       <IconeGithub />
     </>
