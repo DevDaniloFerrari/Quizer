@@ -4,6 +4,7 @@ import styles from "@/styles/Questao.module.css";
 import Enunciado from "./Enunciado";
 import Resposta from "./Resposta";
 import Temporizador from "./Temporizador";
+import Botao from "./Botao";
 
 const letras = [
   { valor: "A", cor: "#F2C886" },
@@ -18,6 +19,7 @@ interface QuestaoProps {
   tempoParaResposta?: number;
   respostaFornecida: (indice: number) => void;
   tempoEsgotado: () => void;
+  desistir: () => void;
 }
 
 type NumeroQuestoes = {
@@ -47,12 +49,20 @@ export default function Questao(props: QuestaoProps) {
   return (
     <div className={styles.questao}>
       <Enunciado texto={questao.enunciado} />
-      <div> Questão {props.numero.atual}/{props.numero.total} </div>
-      <Temporizador
-        key={questao.id}
-        duracao={props.tempoParaResposta ?? 10}
-        tempoEsgotado={props.tempoEsgotado}
-      />
+      <div>Questão {props.numero.atual}/{props.numero.total}</div>
+      <div className={styles.separador}>
+        <div className={styles.botao}>
+          <Botao texto="Voltar" href="/" width={120}/>
+        </div>
+        <Temporizador
+          key={questao.id}
+          duracao={props.tempoParaResposta ?? 10}
+          tempoEsgotado={props.tempoEsgotado}
+        />
+        <div className={styles.botao}>
+          <Botao texto="Desistir" onClick={props.desistir} width={120}/>
+        </div>
+      </div>
       {renderizarResposta()}
     </div>
   );
