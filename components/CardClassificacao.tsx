@@ -33,16 +33,18 @@ export default function CardClassificacao(props: CardClassificacaoProps) {
   }, []);
 
   return (
-    <div className={styles.card}>
-      <div>{props.posicao}</div>
-      <img
-        src={usuario.imagemUrl || "/images/avatar.svg"}
-        alt=""
-        className={styles.avatar}
-      />
-      <div>{usuario.nome}</div>
-      <div>{props.classificacao.totalRespostasCertas}</div>
-      <div>{props.classificacao.totalRespostasErradas}</div>
-    </div>
+    usuario && (
+      <div className={styles.card}>
+        <div>{props.posicao}</div>
+        <img
+          src={usuario.imagemUrl || "/images/avatar.svg"}
+          alt=""
+          className={styles.avatar}
+        />
+        <div>{usuario.nome}</div>
+        <div>{props.classificacao.totalRespostasCertas}</div>
+        <div>{props.classificacao.totalRespostasErradas}</div>
+      </div>
+    )
   );
 }
