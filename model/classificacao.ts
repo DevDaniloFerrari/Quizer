@@ -11,6 +11,15 @@ export class Classificacao {
     this.#quizesRespondidos.push(quizRespondido);
   }
 
+  converterParaObjeto() {
+    return {
+      uid: this.#uid,
+      quizesRespondidos: this.#quizesRespondidos.map((quiz) =>
+        quiz.converterParaObjeto()
+      ),
+    };
+  }
+
   static criarUsandoObjeto(objeto: Classificacao): Classificacao {
     const quizes = objeto.quizesRespondidos.map((quiz) =>
       QuizRespondido.criarUsandoObjeto(quiz)
@@ -25,6 +34,22 @@ export class Classificacao {
   get quizesRespondidos() {
     return this.#quizesRespondidos;
   }
+
+  get totalQuizesRespondidos() {
+    return this.#quizesRespondidos.length;
+  }
+
+  get totalRespostasCertas() {
+    return this.#quizesRespondidos.reduce((total, { certas }) => {
+      return total + certas;
+    }, 0);
+  }
+
+  get totalRespostasErradas() {
+    return this.#quizesRespondidos.reduce((total, { erradas }) => {
+      return total + erradas;
+    }, 0);
+  }
 }
 
 export class QuizRespondido {
@@ -38,6 +63,13 @@ export class QuizRespondido {
 
   static criarUsandoObjeto(quiz: QuizRespondido): QuizRespondido {
     return new QuizRespondido(quiz.certas, quiz.erradas);
+  }
+
+  converterParaObjeto() {
+    return {
+      certas: this.#certas,
+      erradas: this.#erradas,
+    };
   }
 
   get certas() {

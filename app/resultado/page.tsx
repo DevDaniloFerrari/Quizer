@@ -36,21 +36,22 @@ export default function Resultado({
 
   async function computarQuizRespondido() {
     const querySnapshot = await getDocs(
-      query(collection(db, "classificacao"), where("uid", "==", usuario.uid))
+      query(collection(db, "classificacoes"), where("uid", "==", usuario.uid))
     );
     const classificacao = querySnapshot.docs.map((doc) =>
       Classificacao.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
     )[0];
 
-    const quizRespondido = new QuizRespondido(certas, total - certas);
+    const quizRespondido = new QuizRespondido(+certas, total - certas);
 
     if (!classificacao) {
       let primeiraClassificao = new Classificacao(usuario.uid, [
         quizRespondido,
       ]);
+
       await addDoc(
-        collection(db, "classificacao"),
-        JSON.parse(JSON.stringify(primeiraClassificao))
+        collection(db, "classificacoes"),
+        primeiraClassificao.converterParaObjeto()
       );
       return;
     }
@@ -59,8 +60,8 @@ export default function Resultado({
     const docRef = querySnapshot.docs[0].ref;
     await deleteDoc(docRef);
     await addDoc(
-      collection(db, "classificacao"),
-      Object.assign({}, classificacao)
+      collection(db, "classificacoes"),
+      classificacao.converterParaObjeto()
     );
   }
 

@@ -1,6 +1,11 @@
+import { Classificacao } from "@/model/classificacao";
 import styles from "@/styles/CardClassificacao.module.css";
 
-export default function CardClassificacao() {
+interface CardClassificacaoProps {
+  classificacao: Classificacao
+}
+
+export default function CardClassificacao(props: CardClassificacaoProps) {
   return (
     <div className={styles.card}>
       <div>1</div>
@@ -10,8 +15,8 @@ export default function CardClassificacao() {
         className={styles.avatar}
       />
       <div>Danilo Ferrari</div>
-      <div>20</div>
-      <div>10</div>
+      <div>{props.classificacao.totalRespostasCertas}</div>
+      <div>{props.classificacao.totalRespostasErradas}</div>
     </div>
   );
 }
