@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 import {
   auth,
   createUserWithEmailESenha,
+  db,
   signInWithEmailESenha,
   signInWithGooglePopup,
 } from "@/firebase";
 import { Cookies, useCookies } from "next-client-cookies";
+import UsuarioLogado from "@/model/usuarioLogado";
 import Usuario from "@/model/usuario";
+import { doc, setDoc } from "firebase/firestore";
 
 interface AuthContextProps {
-  usuario?: Usuario;
+  usuario?: UsuarioLogado;
   carregando?: boolean;
   login?: (email: string, senha: string) => Promise<void>;
   cadastrar?: (email: string, senha: string) => Promise<void>;
@@ -22,7 +25,9 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({});
 
-async function usuarioNormalizado(usuarioFirebase: User): Promise<Usuario> {
+async function usuarioNormalizado(
+  usuarioFirebase: User
+): Promise<UsuarioLogado> {
   const token = await usuarioFirebase.getIdToken();
   return {
     uid: usuarioFirebase.uid,
@@ -45,12 +50,24 @@ function gerenciarCookie(logado: boolean, cookies: Cookies) {
 export function AuthProvider(props: any) {
   const cookies = useCookies();
   const router = useRouter();
-  const [usuario, setUsuario] = useState<Usuario>();
+  const [usuario, setUsuario] = useState<UsuarioLogado>();
   const [carregando, setCarregando] = useState<boolean>(true);
+
+  async function salvarUsuario(usuarioLogado: UsuarioLogado) {
+    const userRef = doc(db, "usuarios", usuarioLogado.uid);
+    const usuario = {
+      uid: usuarioLogado.uid,
+      email: usuarioLogado.email,
+      nome: usuarioLogado.nome,
+      imagemUrl: usuarioLogado.imagemUrl,
+    } as Usuario;
+    await setDoc(userRef, usuario);
+  }
 
   async function configurarSessao(usuarioFirebase: User | null) {
     if (usuarioFirebase?.email) {
       const usuario = await usuarioNormalizado(usuarioFirebase);
+      salvarUsuario(usuario);
       setUsuario(usuario);
       gerenciarCookie(true, cookies);
       setCarregando(false);

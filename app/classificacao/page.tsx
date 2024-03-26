@@ -31,10 +31,11 @@ export default function ClassificacaoPage() {
   return (
     <div className={styles.classificacao}>
       <h1>Classificação</h1>
-      {classificacoes.map((classificacao) => (
+      {classificacoes.map((classificacao, index) => (
         <CardClassificacao
           key={classificacao.uid}
           classificacao={classificacao}
+          posicao={index + 1}
         />
       ))}
       <Botao texto="Voltar" loading={false} href="/" />
