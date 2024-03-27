@@ -66,7 +66,7 @@ export default function Resultado({
   }
 
   useEffect(() => {
-    if (usuario.uid) computarQuizRespondido();
+    if (usuario?.uid) computarQuizRespondido();
   }, []);
 
   const capturarScreenshot = useCallback(async () => {
