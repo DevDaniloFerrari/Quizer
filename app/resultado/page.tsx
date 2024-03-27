@@ -78,10 +78,10 @@ export default function Resultado({
 
       Object.assign(downloadLink, {
         href: imageData,
-        download: "screenshot.jpg",
+        download: "resultado.jpg",
       }).click();
     } catch {
-      console.error("Erro ao obter screenshot");
+      console.error("Erro ao obter resultado");
     } finally {
       setLoading(false);
     }
