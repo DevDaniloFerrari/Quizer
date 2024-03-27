@@ -140,6 +140,7 @@ export default function Home() {
             loading={loadingGerarQuestoes}
           />
           <Botao texto="Classificação" href="/classificacao" />
+          <Botao texto="Modo competição" onClick={() => notificar('Aguarde. Em breve disponibilizaremos essa funcionalidade! :)')} />
         </div>
       </form>
       <IconeGithub />
