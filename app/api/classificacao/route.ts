@@ -6,7 +6,7 @@ export async function GET() {
   const classificacoes = await getClassificacoesFirebase();
 
   const classificacoesOrdenadas = classificacoes.sort(
-    (a, b) => a.totalRespostasCertas - b.totalRespostasCertas
+    (a, b) => b.totalRespostasCertas - a.totalRespostasCertas 
   );
 
   return NextResponse.json(classificacoesOrdenadas.map(x => x.converterParaObjeto()));

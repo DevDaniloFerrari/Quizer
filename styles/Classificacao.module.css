@@ -5,3 +5,19 @@
     flex-direction: column;
     height: 100vh;
 }
+
+.titulo {
+    font-size: 2rem;
+    margin-bottom: 50px;
+}
+
+.cabecalho{
+    display: flex;
+    border: 1px white solid;
+    height: 50px;
+    width: 600px;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
