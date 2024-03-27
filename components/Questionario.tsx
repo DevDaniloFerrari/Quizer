@@ -15,9 +15,9 @@ interface QuestionarioProps {
 }
 
 type NumeroQuestoes = {
-  atual: number,
-  total: number
-}
+  atual: number;
+  total: number;
+};
 
 export default function Questionario(props: QuestionarioProps) {
   function respostaFornecida(indice: number) {
@@ -28,7 +28,7 @@ export default function Questionario(props: QuestionarioProps) {
 
   return (
     <div className={styles.questionario}>
-      {props.questao ? (
+      {props.questao && (
         <>
           <Questao
             numero={props.numero}
@@ -44,8 +44,6 @@ export default function Questionario(props: QuestionarioProps) {
             loading={props.loading}
           />
         </>
-      ) : (
-        null
       )}
     </div>
   );

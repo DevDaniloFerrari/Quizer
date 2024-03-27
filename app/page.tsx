@@ -26,7 +26,7 @@ export default function Home() {
   const [valoresPadroes, setValoresPadroes] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingGerarQuestoes, setLoadingGerarQuestoes] = useState(false);
-  const { usuario, logout } = useAuth();
+  const { usuario, carregando, logout } = useAuth();
 
   const {
     register,
@@ -85,7 +85,7 @@ export default function Home() {
       style: { fontSize: "1rem" },
     });
 
-  if (!valoresPadroes) {
+  if (!valoresPadroes || carregando) {
     return (
       <div className={styles.home}>
         <CircularProgress
