@@ -1,7 +1,7 @@
 "use client";
 import Questionario from "@/components/Questionario";
 import QuestaoModel from "@/model/questao";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "url";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -17,6 +17,14 @@ interface PerguntaProps {
   };
 }
 
+export type IQuestoesHistorico = {
+  id: number;
+  enunciado: string;
+  acertou: boolean;
+  respostaVerdadeira: string;
+  respostaErrada: string;
+}
+
 export default function Perguntas(props: PerguntaProps) {
   const router = useRouter();
   const [questao, setQuestao] = useState<QuestaoModel>();
@@ -24,6 +32,7 @@ export default function Perguntas(props: PerguntaProps) {
   const [numeroQuestao, setNumeroQuestao] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [questoes, setQuestoes] = useState<QuestaoModel[]>([]);
+  const [questoesRespondidas, setQuestoesRespondidas] = useState<QuestaoModel[]>([]);
 
   const quantidadePerguntas = Math.min(Math.max(Number(props.searchParams.quantidadePerguntas), 10), 30);
   const duracaoPerguntas = Math.min(Math.max(Number(props.searchParams.duracaoPerguntas), 10), 60);
@@ -72,6 +81,7 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   function questaoRespondida(questaoRespondida: QuestaoModel) {
+    setQuestoesRespondidas((questoesAntigas) => [...questoesAntigas, questaoRespondida]);
     setQuestao(questaoRespondida);
     const acertou = questaoRespondida.acertou;
     setRespostasCertas(respostasCertas + (acertou ? 1 : 0));
@@ -84,17 +94,42 @@ export default function Perguntas(props: PerguntaProps) {
     finalizar();
   }
 
-  function finalizar() {
-    setLoading(true);
-    const url = format({
-      pathname: "/resultado",
-      query: {
-        total: questoes.length,
-        certas: respostasCertas,
-      },
+  function formatarQuestoesParaHistorico(questoes, questoesRespondidas) { 
+    const questoesParaHistorico: IQuestoesHistorico[] = questoes.map((questao) => {
+      const questaoRespondida = questoesRespondidas.find((qr) => qr.id === questao.id) || questao;
+      const respostaErrada = questaoRespondida.respostas.find((x) => !x.certa && x.revelada)?.valor || '';
+      const respostaVerdadeira = questaoRespondida.respostas.find((x) => x.certa).valor;
+      
+      return {
+        id: questao.id,
+        acertou: questaoRespondida.acertou,
+        enunciado: questao.enunciado,
+        respostaErrada,
+        respostaVerdadeira,
+      };
     });
+  
+    localStorage.setItem('questoes', JSON.stringify(questoesParaHistorico));
+  
+    return questoesParaHistorico;
+  }
+  
 
-    router.push(url);
+  function finalizar() {
+    const questoesFormatada = formatarQuestoesParaHistorico(questoes, questoesRespondidas);
+
+    if (questoesFormatada.length) {
+      setLoading(true);
+      const url = format({
+        pathname: "/resultado",
+        query: {
+          total: questoes.length,
+          certas: respostasCertas,
+        },
+      });
+
+      router.push(url);
+    }
   }
 
   return questao ? (

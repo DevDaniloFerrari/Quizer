@@ -5,7 +5,8 @@ import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Resultado.module.css";
-import { navegarPorLink } from "@/functions/utils";
+import GenericDrawer from "@/components/GenericDrawer";
+import Historico from "@/components/Historico";
 import { Classificacao, QuizRespondido } from "@/model/classificacao";
 import useAuth from "@/data/hook/useAuth";
 import {
@@ -26,13 +27,8 @@ export default function Resultado({
   const { total, certas } = searchParams;
   const percentual = Math.round((certas / total) * 100);
   const [loading, setLoading] = useState(false);
-  const [loadingJogarNovamente, setLoadingJogarNovamente] = useState(false);
+  const [historicoAberto, setHistoricoAberto] = useState(false);
   const { usuario } = useAuth();
-
-  const jogarNovamente = () => {
-    setLoadingJogarNovamente(true);
-    navegarPorLink("/");
-  };
 
   async function computarQuizRespondido() {
     const querySnapshot = await getDocs(
@@ -87,6 +83,10 @@ export default function Resultado({
     }
   }, []);
 
+  const abrirHistoricoPartida = useCallback(() => {
+      setHistoricoAberto(!historicoAberto);
+  }, [historicoAberto]);
+
   return (
     <div className={styles.resultado}>
       <h1>Resultado Final</h1>
@@ -99,16 +99,20 @@ export default function Resultado({
           corFundo="#DE6A33"
         />
       </div>
-      <Botao
-        texto="Tentar Novamente"
-        onClick={jogarNovamente}
-        loading={loadingJogarNovamente}
-      />
-      <Botao
-        texto="Baixar Resultado"
-        onClick={capturarScreenshot}
-        loading={loading}
-      />
+      <Botao texto="Tentar Novamente" href="/"/>
+      <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
+      <Botao texto="Baixar Resultado" onClick={capturarScreenshot} loading={loading} />
+      {
+        historicoAberto ? (
+        <GenericDrawer 
+            variant={"temporary"}
+            title="Histórico da Partida"
+            status={historicoAberto} 
+            onClose={abrirHistoricoPartida} 
+            otherProps={{PaperProps: {sx: {backgroundColor: '#5e44d5', width: '30%'}}}}>
+          <Historico />
+        </GenericDrawer>) : null
+      }
       <IconeGithub />
     </div>
   );
