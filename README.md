@@ -9,7 +9,7 @@
 ## 🌟 Sobre o Quizer
 
 <div align="center">
- <img width="300" alt="quizer" src="https://github.com/DevDaniloFerrari/Quizer/assets/40414119/867f8c34-1190-4323-8273-1c2e128bbf96">
+ <img width="400" alt="quizer" src="https://github.com/DevDaniloFerrari/Quizer/assets/40414119/7b0defe7-d747-4a11-ac1c-306de4759e4a">
 </div>
  </br> </br>
 <strong>Quizer</strong> é um projeto de perguntas e respostas que visa ajudar os novos desenvolvedores a engajar na comunidade de código aberto.
