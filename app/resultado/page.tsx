@@ -5,6 +5,8 @@ import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Resultado.module.css";
+import GenericDrawer from "@/components/GenericDrawer";
+import Historico from "@/components/Historico"
 
 export default function Resultado({
   searchParams,
@@ -14,6 +16,7 @@ export default function Resultado({
   const { total, certas } = searchParams;
   const percentual = Math.round((certas / total) * 100);
   const [loading, setLoading] = useState(false);
+  const [historicoAberto, setHistoricoAberto] = useState(false);
 
   const capturarScreenshot = useCallback(async () => {
     try {
@@ -35,6 +38,10 @@ export default function Resultado({
     }
   }, []);
 
+  const abrirHistoricoPartida = useCallback(() => {
+      setHistoricoAberto(!historicoAberto);
+  }, [historicoAberto]);
+
   return (
     <div className={styles.resultado}>
       <h1>Resultado Final</h1>
@@ -48,7 +55,19 @@ export default function Resultado({
         />
       </div>
       <Botao texto="Tentar Novamente" href="/"/>
+      <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
       <Botao texto="Baixar Resultado" onClick={capturarScreenshot} loading={loading} />
+      {
+        historicoAberto ? (
+        <GenericDrawer 
+            variant={"temporary"}
+            title="Histórico da Partida"
+            status={historicoAberto} 
+            onClose={abrirHistoricoPartida} 
+            otherProps={{PaperProps: {sx: {backgroundColor: '#5e44d5', width: '30%'}}}}>
+          <Historico />
+        </GenericDrawer>) : null
+      }
       <IconeGithub />
     </div>
   );
