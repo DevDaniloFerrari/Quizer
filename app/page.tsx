@@ -14,8 +14,7 @@ import { navegarPorLink } from "@/functions/utils";
 import AvatarUsuario from "@/components/AvatarUsuario";
 import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
 import useAuth from "@/data/hook/useAuth";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import Layout from "@/components/template/Layout";
 
 type FormData = {
   perguntas?: number;
@@ -67,28 +66,6 @@ export default function Home() {
     );
   };
 
-  const gerarQuestao = async () => {
-    try {
-      setLoadingGerarQuestoes(true);
-      const resposta = await fetch(`${BASE_URL}/questoes`, { method: "POST" });
-      const response = await resposta.json();
-
-      if (!process.env.OPENAI_API_KEY) {
-        notificar(response.mensagem);
-      }
-    } catch {
-      alert("Erro ao gerar questão!");
-    } finally {
-      setLoadingGerarQuestoes(false);
-    }
-  };
-
-  const notificar = (mensagem: string) =>
-    toast(mensagem, {
-      type: "info",
-      style: { fontSize: "1rem" },
-    });
-
   if (!valoresPadroes || carregando) {
     return (
       <div className={styles.home}>
@@ -100,55 +77,50 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.home}>
-      <div className={styles.cabecalho}>
-        <h1>Quizer</h1>
-        {usuario && (
-          <ArrowLeftEndOnRectangleIcon
-            onClick={logout}
-            className="h-6 absolute right-24 cursor-pointer"
-          />
-        )}
-        <div className={styles.avatarUsuario}>
-          <AvatarUsuario />
+    <Layout>
+      <div className={styles.home}>
+        <div className={styles.cabecalho}>
+          <h1>Quizer</h1>
+          {usuario && (
+            <ArrowLeftEndOnRectangleIcon
+              onClick={logout}
+              className="h-6 absolute right-24 cursor-pointer"
+            />
+          )}
+          <div className={styles.avatarUsuario}>
+            <AvatarUsuario />
+          </div>
         </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.separador}>
+            <>
+              <CustomInput
+                propsInput={{
+                  label: "Quantidade de Perguntas",
+                  type: "number",
+                  error: errors.perguntas ? true : false,
+                  helperText: errors.perguntas?.message,
+                  sx: getStylesForm(errors.perguntas),
+                }}
+                register={register("perguntas")}
+              />
+              <CustomInput
+                propsInput={{
+                  label: "Duração das Perguntas",
+                  type: "number",
+                  error: errors.duracao ? true : false,
+                  helperText: errors.duracao?.message,
+                  sx: getStylesForm(errors.duracao),
+                }}
+                register={register("duracao")}
+              />
+            </>
+            <Botao texto="Iniciar" type="submit" loading={loading} />
+          </div>
+        </form>
+        <IconeGithub />
+        <ToastContainer />
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.separador}>
-          <>
-            <CustomInput
-              propsInput={{
-                label: "Quantidade de Perguntas",
-                type: "number",
-                error: errors.perguntas ? true : false,
-                helperText: errors.perguntas?.message,
-                sx: getStylesForm(errors.perguntas),
-              }}
-              register={register("perguntas")}
-            />
-            <CustomInput
-              propsInput={{
-                label: "Duração das Perguntas",
-                type: "number",
-                error: errors.duracao ? true : false,
-                helperText: errors.duracao?.message,
-                sx: getStylesForm(errors.duracao),
-              }}
-              register={register("duracao")}
-            />
-          </>
-          <Botao texto="Iniciar" type="submit" loading={loading} />
-          <Botao
-            texto="Gerar questão"
-            onClick={gerarQuestao}
-            loading={loadingGerarQuestoes}
-          />
-          <Botao texto="Classificação" href="/classificacao" />
-          <Botao texto="Modo competição" onClick={() => notificar('Aguarde. Em breve disponibilizaremos essa funcionalidade! :)')} />
-        </div>
-      </form>
-      <IconeGithub />
-      <ToastContainer />
-    </div>
+    </Layout>
   );
 }

@@ -5,6 +5,7 @@ import styles from "@/styles/Classificacao.module.css";
 import { useEffect, useState } from "react";
 import { Classificacao } from "@/model/classificacao";
 import { CircularProgress } from "@mui/material";
+import Layout from "@/components/template/Layout";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -38,23 +39,25 @@ export default function ClassificacaoPage() {
   }
 
   return (
-    <div className={styles.classificacao}>
-      <div className={styles.titulo}>Classificação</div>
-      <div className={styles.cabecalho}>
-        <div>posição</div>
-        <div>perfil</div>
-        <div>nome</div>
-        <div>certas</div>
-        <div>erradas</div>
+    <Layout>
+      <div className={styles.classificacao}>
+        <div className={styles.titulo}>Classificação</div>
+        <div className={styles.cabecalho}>
+          <div>posição</div>
+          <div>perfil</div>
+          <div>nome</div>
+          <div>certas</div>
+          <div>erradas</div>
+        </div>
+        {classificacoes.map((classificacao, index) => (
+          <CardClassificacao
+            key={classificacao.uid}
+            classificacao={classificacao}
+            posicao={index + 1}
+          />
+        ))}
+        <Botao texto="Voltar" loading={false} href="/" />
       </div>
-      {classificacoes.map((classificacao, index) => (
-        <CardClassificacao
-          key={classificacao.uid}
-          classificacao={classificacao}
-          posicao={index + 1}
-        />
-      ))}
-      <Botao texto="Voltar" loading={false} href="/" />
-    </div>
+    </Layout>
   );
 }
