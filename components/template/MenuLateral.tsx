@@ -41,7 +41,7 @@ export default function MenuLateral() {
     });
 
   return (
-    <aside className={`flex flex-col bg-purple-400`}>
+    <aside className={`flex flex-col bg-violet-700`}>
       <ul className={`flex-grow`}>
         <div className={`flex justify-center items-center mt-5`}>
           <AvatarUsuario />

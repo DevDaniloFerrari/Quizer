@@ -12,7 +12,7 @@ export default function MenuItem(props: MenuItemProps) {
   function renderizarConteudo() {
     return (
       <div
-        className={`flex flex-col justify-center items-center h-20 w-25 dark:text-gray-200 ${props.className}`}
+        className={`flex flex-col justify-center items-center h-20 w-25 cursor-pointer ${props.className}`}
       >
         {props.icone}
         <span className={`text-xs font-light text-center`}>{props.texto}</span>
@@ -21,7 +21,7 @@ export default function MenuItem(props: MenuItemProps) {
   }
 
   return (
-    <li onClick={props.onClick} className={`hover:bg-gray-100`}>
+    <li onClick={props.onClick} className={`hover:bg-violet-600`}>
       {props.url ? (
         <Link href={props.url}>{renderizarConteudo()}</Link>
       ) : (
