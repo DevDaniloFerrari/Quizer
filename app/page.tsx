@@ -11,8 +11,6 @@ import CustomInput from "@/components/Input";
 import { getStylesForm } from "@/styles/Input-styles";
 import { formInicial } from "./forms/schemas";
 import { navegarPorLink } from "@/functions/utils";
-import AvatarUsuario from "@/components/AvatarUsuario";
-import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
 import useAuth from "@/data/hook/useAuth";
 import Layout from "@/components/template/Layout";
 
@@ -24,8 +22,7 @@ type FormData = {
 export default function Home() {
   const [valoresPadroes, setValoresPadroes] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingGerarQuestoes, setLoadingGerarQuestoes] = useState(false);
-  const { usuario, carregando, logout } = useAuth();
+  const { carregando } = useAuth();
 
   const {
     register,
@@ -38,12 +35,12 @@ export default function Home() {
   });
 
   useEffect(() => {
-    localStorage.setItem('questoes', JSON.stringify([]));
+    localStorage.setItem("questoes", JSON.stringify([]));
   }, []);
-  
+
   useEffect(() => {
-    setValue('perguntas', 10);
-    setValue('duracao', 10);
+    setValue("perguntas", 10);
+    setValue("duracao", 10);
   }, [setValue]);
 
   useEffect(() => {
@@ -81,15 +78,6 @@ export default function Home() {
       <div className={styles.home}>
         <div className={styles.cabecalho}>
           <h1>Quizer</h1>
-          {usuario && (
-            <ArrowLeftEndOnRectangleIcon
-              onClick={logout}
-              className="h-6 absolute right-24 cursor-pointer"
-            />
-          )}
-          <div className={styles.avatarUsuario}>
-            <AvatarUsuario />
-          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.separador}>

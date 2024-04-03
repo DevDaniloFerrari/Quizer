@@ -10,11 +10,12 @@ import {
 import MenuItem from "./MenuItem";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import AvatarUsuario from "../AvatarUsuario";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function MenuLateral() {
-  const { logout } = useAuth();
+  const { logout, usuario } = useAuth();
   const [loadingGerarQuestoes, setLoadingGerarQuestoes] = useState(false);
 
   const gerarQuestao = async () => {
@@ -42,6 +43,9 @@ export default function MenuLateral() {
   return (
     <aside className={`flex flex-col bg-purple-400`}>
       <ul className={`flex-grow`}>
+        <div className={`flex justify-center items-center mt-5`}>
+          <AvatarUsuario />
+        </div>
         <MenuItem url="/" texto="Início" icone={IconeCasa} />
         <MenuItem
           onClick={gerarQuestao}
@@ -63,14 +67,14 @@ export default function MenuLateral() {
           icone={IconeCompeticao}
         />
       </ul>
-      <ul>
+      {usuario && <ul>
         <MenuItem
           texto="Sair"
           icone={IconeSair}
           onClick={logout}
           className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
         />
-      </ul>
+      </ul>}
     </aside>
   );
 }
