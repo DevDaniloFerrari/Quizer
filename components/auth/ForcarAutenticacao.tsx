@@ -35,7 +35,6 @@ export default function ForcarAutenticacao(props: any) {
       </div>
     );
   }
-
   if (!carregando && usuario?.email) {
     return renderizarConteudo();
   }
@@ -44,9 +43,10 @@ export default function ForcarAutenticacao(props: any) {
     return renderizarCarregando();
   }
 
-  useEffect(() => {
+  function retornar() {
     router.push("/autenticacao");
-  }, []);
+  }
 
+  retornar();
   return null;
 }

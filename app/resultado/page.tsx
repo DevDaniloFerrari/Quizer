@@ -63,7 +63,7 @@ export default function Resultado({
 
   useEffect(() => {
     if (usuario?.uid) computarQuizRespondido();
-  }, []);
+  }, [usuario]);
 
   const capturarScreenshot = useCallback(async () => {
     try {
@@ -84,7 +84,7 @@ export default function Resultado({
   }, []);
 
   const abrirHistoricoPartida = useCallback(() => {
-      setHistoricoAberto(!historicoAberto);
+    setHistoricoAberto(!historicoAberto);
   }, [historicoAberto]);
 
   return (
@@ -99,20 +99,26 @@ export default function Resultado({
           corFundo="#DE6A33"
         />
       </div>
-      <Botao texto="Tentar Novamente" href="/"/>
+      <Botao texto="Tentar Novamente" href="/" />
       <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
-      <Botao texto="Baixar Resultado" onClick={capturarScreenshot} loading={loading} />
-      {
-        historicoAberto ? (
-        <GenericDrawer 
-            variant={"temporary"}
-            title="Histórico da Partida"
-            status={historicoAberto} 
-            onClose={abrirHistoricoPartida} 
-            otherProps={{PaperProps: {sx: {backgroundColor: '#5e44d5', width: '30%'}}}}>
+      <Botao
+        texto="Baixar Resultado"
+        onClick={capturarScreenshot}
+        loading={loading}
+      />
+      {historicoAberto ? (
+        <GenericDrawer
+          variant={"temporary"}
+          title="Histórico da Partida"
+          status={historicoAberto}
+          onClose={abrirHistoricoPartida}
+          otherProps={{
+            PaperProps: { sx: { backgroundColor: "#5e44d5", width: "30%" } },
+          }}
+        >
           <Historico />
-        </GenericDrawer>) : null
-      }
+        </GenericDrawer>
+      ) : null}
       <IconeGithub />
     </div>
   );
