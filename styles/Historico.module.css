@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.certa {
+    background-color: #2BAA6D;
+  }
+  
+.errada {
+     background-color: #E44A4C;
+}
+
+.panel {
+    border-radius: 8px;
+    min-height: 100px;
+    word-wrap: break-word;
+    color: #fff;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 5px
+}
+
+.textoRespostaCerta{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.textoRespostaErrada {
+    font-size: 14px;
+}
+
+.containerSubTitle {
+    margin-top: 30px;
+}
+.subTitle {
+    margin: 10px 5px 10px 5px;
+    text-align: center;
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+}
+
+.dividir {
+    background-color: #fff;
+}
+
+.semHistorico {
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+}

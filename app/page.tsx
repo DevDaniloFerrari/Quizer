@@ -39,8 +39,12 @@ export default function Home() {
   });
 
   useEffect(() => {
-    setValue("perguntas", 10);
-    setValue("duracao", 10);
+    localStorage.setItem('questoes', JSON.stringify([]));
+  }, []);
+  
+  useEffect(() => {
+    setValue('perguntas', 10);
+    setValue('duracao', 10);
   }, [setValue]);
 
   useEffect(() => {
