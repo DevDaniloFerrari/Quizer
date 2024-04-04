@@ -5,7 +5,8 @@ export default class Sala {
   #primeiroJogador: Usuario;
   #segundoJogador: Usuario;
 
-  constructor(primeiroJogador: Usuario) {
+  constructor(primeiroJogador: Usuario, id?: string) {
+    this.#id = id;
     this.#primeiroJogador = primeiroJogador;
   }
 
@@ -22,7 +23,11 @@ export default class Sala {
   }
 
   static criarUsandoObjeto(objeto: Sala): Sala {
-    return new Sala(objeto.primeiroJogador);
+    return new Sala(objeto.primeiroJogador, objeto.id);
+  }
+
+  adicionarSegundoJogador(usuario: Usuario) {
+    this.#segundoJogador = usuario;
   }
 
   converterParaObjeto() {

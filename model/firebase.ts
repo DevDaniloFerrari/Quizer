@@ -9,6 +9,7 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  setDoc,
 } from "firebase/firestore";
 import { Classificacao } from "./classificacao";
 import Sala from "./sala";
@@ -33,14 +34,14 @@ export const getClassificacoesFirebase = async () => {
 };
 
 export const getSalaEmEspera = async () => {
-  const querySnapshot = await getDocs(
-    query(collection(db, "salas"), where("segundoJogador", "==", null))
-  );
+  const querySnapshot = await getDocs(query(collection(db, "salas")));
   const salas = querySnapshot.docs.map((doc) =>
-    Sala.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
+    Sala.criarUsandoObjeto(
+      JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+    )
   );
 
-  return salas;
+  return salas.find((x) => x.segundoJogador == null);
 };
 
 export const criarNovaSala = async (
@@ -53,11 +54,16 @@ export const criarNovaSala = async (
     JSON.parse(JSON.stringify(sala.converterParaObjeto()))
   );
 
-  console.log(novaSala.id);
-
   const docRef = doc(db, "salas", novaSala.id);
 
   const unsubscribe = onSnapshot(docRef, (doc) => {
     callback(Sala.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data()))));
   });
+
+  return unsubscribe;
+};
+
+export const entrarNaSala = async (sala: Sala) => {
+  const salaRef = doc(db, "salas", sala.id);
+  await setDoc(salaRef, sala.converterParaObjeto());
 };
