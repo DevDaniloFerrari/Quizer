@@ -58,23 +58,19 @@ export default function MenuLateral() {
           icone={IconeClassificacao}
         />
         <MenuItem
-          onClick={() =>
-            notificar(
-              "Aguarde. Em breve disponibilizaremos essa funcionalidade! :)"
-            )
-          }
+          url="/competicao"
           texto="Modo Competição"
           icone={IconeCompeticao}
+          somenteParaUsuarioAutenticado
         />
       </ul>
-      {usuario && <ul>
-        <MenuItem
-          texto="Sair"
-          icone={IconeSair}
-          onClick={logout}
-          className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
-        />
-      </ul>}
+      <MenuItem
+        texto="Sair"
+        icone={IconeSair}
+        onClick={logout}
+        somenteParaUsuarioAutenticado
+        className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
+      />
     </aside>
   );
 }

@@ -1,3 +1,4 @@
+import useAuth from "@/data/hook/useAuth";
 import Link from "next/link";
 
 interface MenuItemProps {
@@ -5,10 +6,15 @@ interface MenuItemProps {
   texto: string;
   icone: any;
   className?: string;
+  somenteParaUsuarioAutenticado?: boolean;
   onClick?: (evento: any) => void;
 }
 
 export default function MenuItem(props: MenuItemProps) {
+  const { usuario } = useAuth();
+
+  if (props.somenteParaUsuarioAutenticado && !usuario) return;
+
   function renderizarConteudo() {
     return (
       <div
@@ -21,7 +27,7 @@ export default function MenuItem(props: MenuItemProps) {
   }
 
   return (
-    <li onClick={props.onClick} className={`hover:bg-violet-600`}>
+    <li onClick={props.onClick} className={`hover:bg-violet-600 list-none`}>
       {props.url ? (
         <Link href={props.url}>{renderizarConteudo()}</Link>
       ) : (
