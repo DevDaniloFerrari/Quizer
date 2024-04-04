@@ -1,7 +1,18 @@
 import { db } from "@/firebase";
 import QuestaoModel from "@/model/questao";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { Classificacao } from "./classificacao";
+import Sala from "./sala";
+import Usuario from "./usuario";
 
 export const getQuestoesFirebase = async () => {
   const querySnapshot = await getDocs(collection(db, "questoes"));
@@ -19,4 +30,34 @@ export const getClassificacoesFirebase = async () => {
   );
 
   return classificacoes;
+};
+
+export const getSalaEmEspera = async () => {
+  const querySnapshot = await getDocs(
+    query(collection(db, "salas"), where("segundoJogador", "==", null))
+  );
+  const salas = querySnapshot.docs.map((doc) =>
+    Sala.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
+  );
+
+  return salas;
+};
+
+export const criarNovaSala = async (
+  usuario: Usuario,
+  callback: (sala: Sala) => void
+) => {
+  const sala = new Sala(usuario);
+  const novaSala = await addDoc(
+    collection(db, "salas"),
+    JSON.parse(JSON.stringify(sala.converterParaObjeto()))
+  );
+
+  console.log(novaSala.id);
+
+  const docRef = doc(db, "salas", novaSala.id);
+
+  const unsubscribe = onSnapshot(docRef, (doc) => {
+    callback(Sala.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data()))));
+  });
 };
