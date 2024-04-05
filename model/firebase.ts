@@ -4,10 +4,8 @@ import {
   collection,
   getDocs,
   query,
-  where,
   addDoc,
   doc,
-  getDoc,
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
@@ -41,7 +39,7 @@ export const getSalaEmEspera = async () => {
     )
   );
 
-  return salas.find((x) => x.segundoJogador == null);
+  return salas.find((sala) => sala.aguardandoJogador);
 };
 
 export const criarNovaSala = async (

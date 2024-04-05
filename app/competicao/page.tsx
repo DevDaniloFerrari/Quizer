@@ -22,8 +22,6 @@ export default function Competicao() {
         imagemUrl: usuario.imagemUrl,
       } as Usuario;
 
-      console.log(salaEmEspera)
-
       if (salaEmEspera == null) {
         criarNovaSala(parcicipante, setSala).then((unsubscribe) => {});
         return;
