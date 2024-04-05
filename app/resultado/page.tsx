@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import html2canvas from "html2canvas";
+import domtoimage from 'dom-to-image';
 import Botao from "@/components/Botao";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
@@ -60,32 +60,54 @@ export default function Resultado({
       classificacao.converterParaObjeto()
     );
   }
-
+  
   useEffect(() => {
     if (usuario?.uid) computarQuizRespondido();
-  }, [usuario]);
+  }, [usuario, computarQuizRespondido]);
 
-  const capturarScreenshot = useCallback(async () => {
+  useEffect(() => {
+    if (loading) {
+      capturarScreenshot();
+    }
+  }, [loading]);
+
+  const capturarScreenshot = async () => {
     try {
-      setLoading(true);
-      const canvas = await html2canvas(document.body),
-        imageData = canvas.toDataURL("image/jpeg"),
-        downloadLink = document.createElement("a");
-
-      Object.assign(downloadLink, {
-        href: imageData,
-        download: "resultado.jpg",
-      }).click();
-    } catch {
-      console.error("Erro ao obter resultado");
+      const node = document.body;
+      const imageDataUrl = await domtoimage.toJpeg(node);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imageDataUrl;
+      downloadLink.download = 'resultado.jpg';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.log('Erro ao obter a imagem do resultado', error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
+
+  const loadingScreenshot = useCallback(() => {
+    setLoading(!loading);
+  }, [loading]);
 
   const abrirHistoricoPartida = useCallback(() => {
     setHistoricoAberto(!historicoAberto);
   }, [historicoAberto]);
+
+  const renderizarBotoes = () => {
+    return (
+      <>
+        <Botao texto="Tentar Novamente" href="/" />
+        <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
+        <Botao
+          texto="Baixar Resultado"
+          onClick={loadingScreenshot}
+        />
+      </>
+    )
+  };
 
   return (
     <div className={styles.resultado}>
@@ -99,13 +121,7 @@ export default function Resultado({
           corFundo="#DE6A33"
         />
       </div>
-      <Botao texto="Tentar Novamente" href="/" />
-      <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
-      <Botao
-        texto="Baixar Resultado"
-        onClick={capturarScreenshot}
-        loading={loading}
-      />
+      {!loading ? renderizarBotoes() : null}
       {historicoAberto ? (
         <GenericDrawer
           variant={"temporary"}

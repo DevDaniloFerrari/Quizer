@@ -34,5 +34,4 @@ export default function Botao(props: BotaoProps) {
   ) : (
     renderizarBotao()
   );
-
 }
