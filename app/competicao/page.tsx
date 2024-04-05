@@ -1,5 +1,6 @@
 "use client";
 import Botao from "@/components/Botao";
+import Temporizador from "@/components/Temporizador";
 import Layout from "@/components/template/Layout";
 import useAuth from "@/data/hook/useAuth";
 import {
@@ -32,7 +33,7 @@ export default function Competicao() {
 
     if (salaEmEspera == null) {
       const callback = await criarNovaSala(parcicipante, setSala);
-      setDesinscrever(() => callback)
+      setDesinscrever(() => callback);
       return;
     }
 
@@ -44,7 +45,7 @@ export default function Competicao() {
   }
 
   function cancelar(sala: Sala) {
-    desinscrever()
+    desinscrever();
     sairDaSala(sala);
     setSala(undefined);
   }
@@ -65,16 +66,43 @@ export default function Competicao() {
     );
   }
 
+  function renderizarTemporizador() {
+    return (
+      <>
+        <span>Prepare-se... a partida já vai começar!</span>
+        <Temporizador
+          key={Math.random()}
+          duracao={10}
+          tempoEsgotado={() => console.log("começou")}
+        />
+      </>
+    );
+  }
+
   return (
     <Layout>
       <div className={styles.competicao}>
         <h1>Modo Competição</h1>
-        {sala && <div>{sala.primeiroJogador?.nome}</div>}
-        {sala && <div>{sala.segundoJogador?.nome}</div>}
+        <div className={`flex m-5 gap-5`}>
+          {sala && (
+            <img
+              className={`h-20 w-20 rounded-full`}
+              src={sala.primeiroJogador?.imagemUrl}
+            />
+          )}
+          {sala && (
+            <img
+              className={`h-20 w-20 rounded-full`}
+              src={sala.segundoJogador?.imagemUrl}
+            />
+          )}
+        </div>
         {sala === undefined ? (
           <Botao texto="Buscar oponente" onClick={() => buscarSala()} />
-        ) : (
+        ) : sala?.segundoJogador === undefined ? (
           renderizarCarregando()
+        ) : (
+          renderizarTemporizador()
         )}
       </div>
     </Layout>
