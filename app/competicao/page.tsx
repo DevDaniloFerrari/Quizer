@@ -3,6 +3,7 @@ import Botao from "@/components/Botao";
 import Temporizador from "@/components/Temporizador";
 import Layout from "@/components/template/Layout";
 import useAuth from "@/data/hook/useAuth";
+import { navegarPorLink } from "@/functions/utils";
 import {
   criarNovaSala,
   entrarNaSala,
@@ -73,7 +74,11 @@ export default function Competicao() {
         <Temporizador
           key={Math.random()}
           duracao={10}
-          tempoEsgotado={() => console.log("começou")}
+          tempoEsgotado={() =>
+            navegarPorLink(
+              `/perguntas?quantidadePerguntas=${10}&duracaoPerguntas=${10}`
+            )
+          }
         />
       </>
     );
