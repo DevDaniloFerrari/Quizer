@@ -72,6 +72,7 @@ export default function Competicao() {
       <>
         <span>Prepare-se... a partida já vai começar!</span>
         <Temporizador
+          size={90}
           key={Math.random()}
           duracao={10}
           tempoEsgotado={() =>

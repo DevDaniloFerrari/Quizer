@@ -5,6 +5,7 @@ interface TemporizadorProps {
   key: any;
   duracao: number;
   tempoEsgotado: () => void;
+  size?: number;
 }
 
 export default function Temporizador(props: TemporizadorProps) {
@@ -12,7 +13,7 @@ export default function Temporizador(props: TemporizadorProps) {
     <div className={styles.temporizador}>
       <CountdownCircleTimer
         duration={props.duracao}
-        size={120}
+        size={props.size || 120}
         isPlaying
         onComplete={props.tempoEsgotado}
         colors={["#BCE595", "#F7B801", "#ED827A"]}
