@@ -8,6 +8,8 @@ import {
   doc,
   onSnapshot,
   setDoc,
+  deleteDoc,
+  Unsubscribe
 } from "firebase/firestore";
 import { Classificacao } from "./classificacao";
 import Sala from "./sala";
@@ -31,7 +33,7 @@ export const getClassificacoesFirebase = async () => {
   return classificacoes;
 };
 
-export const getSalaEmEspera = async () => {
+export const getSalaEmEspera = async () : Promise<Sala> => {
   const querySnapshot = await getDocs(query(collection(db, "salas")));
   const salas = querySnapshot.docs.map((doc) =>
     Sala.criarUsandoObjeto(
@@ -45,7 +47,7 @@ export const getSalaEmEspera = async () => {
 export const criarNovaSala = async (
   usuario: Usuario,
   callback: (sala: Sala) => void
-) => {
+) : Promise<Unsubscribe> => {
   const sala = new Sala(usuario);
   const novaSala = await addDoc(
     collection(db, "salas"),
@@ -55,13 +57,18 @@ export const criarNovaSala = async (
   const docRef = doc(db, "salas", novaSala.id);
 
   const unsubscribe = onSnapshot(docRef, (doc) => {
-    callback(Sala.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data()))));
+    callback(Sala.criarUsandoObjeto(JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))));
   });
 
-  return unsubscribe;
+  return unsubscribe
 };
 
 export const entrarNaSala = async (sala: Sala) => {
   const salaRef = doc(db, "salas", sala.id);
   await setDoc(salaRef, sala.converterParaObjeto());
+};
+
+export const sairDaSala = async (sala: Sala) => {
+  const salaRef = doc(db, "salas", sala.id);
+  await deleteDoc(salaRef);
 };
