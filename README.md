@@ -37,6 +37,7 @@ Para rodar o projeto localmente utilize o comando `npm run dev`.
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/BeaGoddess"><img src="https://avatars.githubusercontent.com/u/80004550?v=4?s=100" width="100px;" alt="Beatriz Silva"/><br /><sub><b>Beatriz Silva</b></sub></a><br /><a href="#code-BeaGoddess" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://caiomassola.github.io"><img src="https://avatars.githubusercontent.com/u/47333514?v=4?s=100" width="100px;" alt="Caio Massola"/><br /><sub><b>Caio Massola</b></sub></a><br /><a href="#code-CaioMassola" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Gismii"><img src="https://avatars.githubusercontent.com/u/97984496?v=4?s=100" width="100px;" alt="Gismi Guimarães"/><br /><sub><b>Gismi Guimarães</b></sub></a><br /><a href="#code-Gismii" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/DevEsterCarvalho"><img src="https://avatars.githubusercontent.com/u/124931450?v=4?s=100" width="100px;" alt="Ester Carvalho"/><br /><sub><b>Ester Carvalho</b></sub></a><br /><a href="#code-DevEsterCarvalho" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
