@@ -43,7 +43,7 @@ export default function MenuLateral() {
   return (
     <aside className={`flex flex-col bg-violet-700`}>
       <ul className={`flex-grow`}>
-        <div className={`flex justify-center items-center mt-5`}>
+        <div className={`flex justify-center items-center mt-5 mb-5`}>
           <AvatarUsuario />
         </div>
         <MenuItem url="/" texto="Início" icone={IconeCasa} />
