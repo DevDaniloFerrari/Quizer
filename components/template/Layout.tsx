@@ -23,7 +23,7 @@ export default function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className={`flex h-screen w-screen`}>
+    <div className={`flex flex-col-reverse sm:flex-row h-screen w-screen`}>
       <MenuLateral />
       <div className={`flex flex-col w-full`}>
         {props.carregando ? renderizarCarregando() : props.children}

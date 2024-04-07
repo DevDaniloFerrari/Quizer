@@ -21,7 +21,7 @@ export default function MenuItem(props: MenuItemProps) {
         className={`flex flex-col justify-center items-center h-20 w-25 cursor-pointer ${props.className}`}
       >
         {props.icone}
-        <span className={`text-xs font-light text-center`}>{props.texto}</span>
+        <span className={`text-xs font-light text-center hidden sm:flex`}>{props.texto}</span>
       </div>
     );
   }

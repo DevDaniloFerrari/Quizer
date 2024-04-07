@@ -41,8 +41,10 @@ export default function MenuLateral() {
     });
 
   return (
-    <aside className={`flex flex-col bg-violet-700`}>
-      <ul className={`flex-grow`}>
+    <aside className={`flex flex-row sm:flex-col bg-violet-700`}>
+      <ul
+        className={`flex flex-grow justify-around flex-row sm:flex-col sm:justify-start`}
+      >
         <div className={`flex justify-center items-center mt-5 mb-5`}>
           <AvatarUsuario />
         </div>
@@ -63,14 +65,14 @@ export default function MenuLateral() {
           icone={IconeCompeticao}
           somenteParaUsuarioAutenticado
         />
+        <MenuItem
+          texto="Sair"
+          icone={IconeSair}
+          onClick={logout}
+          somenteParaUsuarioAutenticado
+          className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
+        />
       </ul>
-      <MenuItem
-        texto="Sair"
-        icone={IconeSair}
-        onClick={logout}
-        somenteParaUsuarioAutenticado
-        className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
-      />
     </aside>
   );
 }
