@@ -53,7 +53,7 @@ export default function MenuLateral({ selecionado }: IMenuLateral) {
         </div>
         <p className={`text-center`}>Olá, {usuario?.nome || 'Jogador!'}</p>
         {
-          true && (
+          !usuario && (
             <div className={`mt-6`}>
               <Divider />
               <MenuItem
