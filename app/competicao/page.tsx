@@ -86,7 +86,7 @@ export default function Competicao() {
   }
 
   return (
-    <Layout>
+    <Layout selecionado={'competicao'}>
       <div className={styles.competicao}>
         <h1>Modo Competição</h1>
         <div className={`flex m-5 gap-5`}>

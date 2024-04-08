@@ -5,9 +5,11 @@ import MenuLateral from "./MenuLateral";
 interface LayoutProps {
   children?: any;
   carregando?: boolean;
+  selecionado: string;
 }
 
 export default function Layout(props: LayoutProps) {
+
   function renderizarCarregando() {
     return (
       <div className={`flex justify-center items-center h-screen`}>
@@ -23,8 +25,8 @@ export default function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className={`flex flex-col-reverse sm:flex-row h-screen w-screen`}>
-      <MenuLateral />
+    <div className={`flex h-screen w-screen`}>
+      <MenuLateral selecionado={props.selecionado} />
       <div className={`flex flex-col w-full`}>
         {props.carregando ? renderizarCarregando() : props.children}
       </div>
