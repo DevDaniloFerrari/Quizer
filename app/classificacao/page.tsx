@@ -31,7 +31,7 @@ export default function ClassificacaoPage() {
   }, []);
 
   return (
-    <Layout carregando={carregando}>
+    <Layout carregando={carregando} selecionado={'classificacao'}>
       <div className={styles.classificacao}>
         <div className={styles.titulo}>Classificação</div>
         <div className={styles.cabecalho}>

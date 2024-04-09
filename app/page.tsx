@@ -9,7 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomInput from "@/components/Input";
 import { getStylesForm } from "@/styles/Input-styles";
-import { formInicial } from "./forms/schemas";
+import { formInicial } from "@/components/forms/schemas";
 import { navegarPorLink } from "@/functions/utils";
 import useAuth from "@/data/hook/useAuth";
 import Layout from "@/components/template/Layout";
@@ -74,7 +74,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
+    <Layout selecionado={'inicio'}>
       <div className={styles.home}>
         <div className={styles.cabecalho}>
           <h1>Quizer</h1>

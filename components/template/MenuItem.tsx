@@ -1,10 +1,13 @@
 import useAuth from "@/data/hook/useAuth";
+import { SvgIconProps } from "@mui/material/SvgIcon/SvgIcon";
 import Link from "next/link";
 
 interface MenuItemProps {
   url?: string;
   texto: string;
-  icone: any;
+  value?: string;
+  selecionado?: string;
+  icone: React.ElementType<SvgIconProps>;
   className?: string;
   somenteParaUsuarioAutenticado?: boolean;
   onClick?: (evento: any) => void;
@@ -18,10 +21,10 @@ export default function MenuItem(props: MenuItemProps) {
   function renderizarConteudo() {
     return (
       <div
-        className={`flex flex-col justify-center items-center h-20 w-25 cursor-pointer ${props.className}`}
+        className={`flex ml-6 gap-6 items-center h-20 w-25 cursor-pointer ${props.className}`}
       >
-        {props.icone}
-        <span className={`text-xs font-light text-center hidden sm:flex`}>{props.texto}</span>
+        <props.icone style={{ color: props.selecionado === props.value ? `#68B8E6` : null} }/>
+        <span className={`text-xs font-light text-center mt-0.5 ${props.selecionado === props.value ? 'text-cyan-300' : null}`}>{props.texto}</span>
       </div>
     );
   }

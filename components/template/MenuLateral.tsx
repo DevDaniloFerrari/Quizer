@@ -1,20 +1,25 @@
 "use client";
 import useAuth from "@/data/hook/useAuth";
-import {
-  IconeCasa,
-  IconeClassificacao,
-  IconeCompeticao,
-  IconeQuestao,
-  IconeSair,
-} from "../icons";
 import MenuItem from "./MenuItem";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import AvatarUsuario from "../AvatarUsuario";
+import { Divider } from "@mui/material";
+import LoginIcon from '@mui/icons-material/Login';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function MenuLateral() {
+interface IMenuLateral {
+  selecionado: string;
+}
+
+export default function MenuLateral({ selecionado }: IMenuLateral) {
+
   const { logout, usuario } = useAuth();
   const [loadingGerarQuestoes, setLoadingGerarQuestoes] = useState(false);
 
@@ -41,38 +46,68 @@ export default function MenuLateral() {
     });
 
   return (
-    <aside className={`flex flex-row sm:flex-col bg-violet-700`}>
-      <ul
-        className={`flex flex-grow justify-around flex-row sm:flex-col sm:justify-start`}
-      >
-        <div className={`flex justify-center items-center mt-5 mb-5`}>
+    <aside className={`flex flex-col w-96 bg-violet-700`}>
+      <ul className={`flex-grow`}>
+        <div className={`flex justify-center items-center mt-10 mb-5`}>
           <AvatarUsuario />
         </div>
-        <MenuItem url="/" texto="Início" icone={IconeCasa} />
-        <MenuItem
-          onClick={gerarQuestao}
-          texto="Gerar Questão"
-          icone={IconeQuestao}
-        />
-        <MenuItem
-          url="/classificacao"
-          texto="Classificação"
-          icone={IconeClassificacao}
-        />
-        <MenuItem
-          url="/competicao"
-          texto="Modo Competição"
-          icone={IconeCompeticao}
-          somenteParaUsuarioAutenticado
-        />
-        <MenuItem
-          texto="Sair"
-          icone={IconeSair}
-          onClick={logout}
-          somenteParaUsuarioAutenticado
-          className={`text-red-600 dark:text-red-400 hover:bg-red-400  hover:text-white`}
-        />
+        <p className={`text-center`}>Olá, {usuario?.nome || 'Jogador!'}</p>
+        {
+          !usuario && (
+            <div className={`mt-6`}>
+              <Divider />
+              <MenuItem
+                url={'/autenticacao'}
+                texto="Login"
+                value="autenticacao"
+                icone={LoginIcon}
+                className={"justify-start"}
+                selecionado={selecionado}
+              />
+              <Divider />
+            </div>
+          )
+        }
+        <div className="mt-10">
+          <MenuItem
+            url="/"
+            texto="Início"
+            value="inicio"
+            icone={HomeOutlinedIcon}
+            selecionado={selecionado}
+          />
+          <MenuItem
+            onClick={gerarQuestao}
+            texto="Gerar Questão"
+            value="gerarquestoes"
+            icone={HelpOutlineOutlinedIcon}
+          />
+          <MenuItem
+            url="/classificacao"
+            texto="Classificação"
+            value="classificacao"
+            icone={LeaderboardOutlinedIcon}
+            selecionado={selecionado}
+          />
+          <MenuItem
+            url="/competicao"
+            texto="Modo Competição"
+            value="competicao"
+            icone={PeopleOutlineIcon}
+            somenteParaUsuarioAutenticado
+            selecionado={selecionado}
+          />
+        </div>
       </ul>
+      <Divider />
+      <MenuItem
+        texto="Sair"
+        value="logout"
+        icone={LogoutOutlinedIcon}
+        onClick={logout}
+        somenteParaUsuarioAutenticado
+        className={"justify-center mr-6"}
+      />
     </aside>
   );
 }
