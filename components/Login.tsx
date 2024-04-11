@@ -12,8 +12,8 @@ import CustomInput from "./Input";
 import Botao from "./Botao";
 
 type FormDataLogin = {
-    email: string;
-    senha: string;
+    email?: string;
+    senha?: string;
 };
 
 export function Login(props: IComponents) {
