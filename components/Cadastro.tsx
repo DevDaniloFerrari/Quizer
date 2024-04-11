@@ -12,10 +12,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type FormDataCadastro = {
-    imagem: any;
-    email: string;
-    senha: string;
-    confirmarSenha: string;
+    imagem?: any;
+    email?: string;
+    senha?: string;
+    confirmarSenha?: string;
 };
 
 export function Cadastro(props: IComponents) {
