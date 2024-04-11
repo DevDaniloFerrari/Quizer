@@ -25,7 +25,7 @@ export default function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className={`flex h-screen w-screen`}>
+    <div className={`flex flex-col-reverse h-screen w-screen sm:flex-row`}>
       <MenuLateral selecionado={props.selecionado} />
       <div className={`flex flex-col w-full`}>
         {props.carregando ? renderizarCarregando() : props.children}

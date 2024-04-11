@@ -21,10 +21,10 @@ export default function MenuItem(props: MenuItemProps) {
   function renderizarConteudo() {
     return (
       <div
-        className={`flex ml-6 gap-6 items-center h-20 w-25 cursor-pointer ${props.className}`}
+        className={`flex gap-6 items-center h-20 w-25 cursor-pointer ${props.className} sm: sm:ml-6`}
       >
         <props.icone style={{ color: props.selecionado === props.value ? `#68B8E6` : null} }/>
-        <span className={`text-xs font-light text-center mt-0.5 ${props.selecionado === props.value ? 'text-cyan-300' : null}`}>{props.texto}</span>
+        <span className={`hidden sm:flex text-xs font-light text-center mt-0.5 ${props.selecionado === props.value ? 'text-cyan-300' : null}`}>{props.texto}</span>
       </div>
     );
   }
