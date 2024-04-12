@@ -1,4 +1,4 @@
-import { IQuestoesHistorico } from '@/app/perguntas/page';
+import { IHistoricoQuestoes } from '@/model/historicoQuestoes';
 import styles from '@/styles/Historico.module.css'
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -6,7 +6,7 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 export default function Historico() {
 
     const questoesFormatadasString = localStorage.getItem('questoes');
-    const questoesFormatadas = questoesFormatadasString ? JSON.parse(questoesFormatadasString) as IQuestoesHistorico[] : [];
+    const questoesFormatadas = questoesFormatadasString ? JSON.parse(questoesFormatadasString) as IHistoricoQuestoes[] : [];
 
     const getTitle = (message: string, index: number) => {
         return `${index + 1}º - ${message}`
