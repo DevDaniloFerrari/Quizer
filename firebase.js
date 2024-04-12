@@ -7,9 +7,11 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AMBIENTE_DE_DESENVOLVIMENTO",
+  apiKey:
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AMBIENTE_DE_DESENVOLVIMENTO",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
@@ -22,6 +24,9 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 const provider = new GoogleAuthProvider();
 
+const storage = getStorage();
+const storageRef = ref(storage, `fotos-${Date.now()}`);
+
 provider.setCustomParameters({
   prompt: "select_account ",
 });
@@ -31,3 +36,5 @@ export const signInWithEmailESenha = (email, senha) =>
   signInWithEmailAndPassword(auth, email, senha);
 export const createUserWithEmailESenha = (email, senha) =>
   createUserWithEmailAndPassword(auth, email, senha);
+
+export const uploadFoto = (file) => uploadBytes(storageRef, file);

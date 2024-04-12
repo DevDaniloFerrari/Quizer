@@ -28,6 +28,8 @@ export const formLogin = yup.object().shape({
 });
 
 export const formCadastroLogin = yup.object().shape({
+  nome: yup.string()
+    .required('Preecha esse campo!'),
   email: yup.string()
     .email('Email inválido! Preecha com um email válido!')
     .required('Preecha esse campo!'),
