@@ -3,7 +3,6 @@ import Image from "next/image";
 import loading from "@/public/images/loading.gif";
 import useAuth from "@/data/hook/useAuth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function ForcarAutenticacao(props: any) {
   const { usuario, carregando } = useAuth();

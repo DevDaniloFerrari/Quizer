@@ -1,4 +1,5 @@
 import useAuth from "@/data/hook/useAuth";
+import Image from "next/image";
 
 interface AvatarUsuarioProps {
   className?: string;
@@ -7,12 +8,14 @@ interface AvatarUsuarioProps {
 export default function AvatarUsuario(props: AvatarUsuarioProps) {
   const { usuario } = useAuth();
   return (
-    <img
+    <Image
       src={usuario?.imagemUrl ?? "/images/avatar.svg"}
       alt="Avatar do Usuário"
-      className={`h-12 w-12 rounded-full ${!usuario && "cursor-pointer"} ${
+      className={`rounded-full ${!usuario && "cursor-pointer"} ${
         props.className
       }`}
+      width={60}
+      height={60}
     />
   );
 }

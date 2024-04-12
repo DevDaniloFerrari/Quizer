@@ -21,6 +21,8 @@ import { db } from "@/firebase";
 import { escutarSala } from "@/model/firebase";
 import Sala from "@/model/sala";
 import { CircularProgress } from "@mui/material";
+import Image from "next/image";
+import { navegarPorLink } from "@/functions/utils";
 
 export default function Resultado({
   searchParams,
@@ -34,37 +36,6 @@ export default function Resultado({
   const { usuario } = useAuth();
   const [sala, setSala] = useState<Sala>();
 
-  async function computarQuizRespondido() {
-    const querySnapshot = await getDocs(
-      query(collection(db, "classificacoes"), where("uid", "==", usuario.uid))
-    );
-    const classificacao = querySnapshot.docs.map((doc) =>
-      Classificacao.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
-    )[0];
-
-    const quizRespondido = new QuizRespondido(+certas, total - certas);
-
-    if (!classificacao) {
-      let primeiraClassificao = new Classificacao(usuario.uid, [
-        quizRespondido,
-      ]);
-
-      await addDoc(
-        collection(db, "classificacoes"),
-        primeiraClassificao.converterParaObjeto()
-      );
-      return;
-    }
-
-    classificacao.adicionarQuizResponido(quizRespondido);
-    const docRef = querySnapshot.docs[0].ref;
-    await deleteDoc(docRef);
-    await addDoc(
-      collection(db, "classificacoes"),
-      classificacao.converterParaObjeto()
-    );
-  }
-
   useEffect(() => {
     if (searchParams.idSala) {
       obterSalaAtual();
@@ -76,8 +47,39 @@ export default function Resultado({
   }
 
   useEffect(() => {
+    async function computarQuizRespondido() {
+      const querySnapshot = await getDocs(
+        query(collection(db, "classificacoes"), where("uid", "==", usuario.uid))
+      );
+      const classificacao = querySnapshot.docs.map((doc) =>
+        Classificacao.criarUsandoObjeto(JSON.parse(JSON.stringify(doc.data())))
+      )[0];
+
+      const quizRespondido = new QuizRespondido(+certas, total - certas);
+
+      if (!classificacao) {
+        let primeiraClassificao = new Classificacao(usuario.uid, [
+          quizRespondido,
+        ]);
+
+        await addDoc(
+          collection(db, "classificacoes"),
+          primeiraClassificao.converterParaObjeto()
+        );
+        return;
+      }
+
+      classificacao.adicionarQuizResponido(quizRespondido);
+      const docRef = querySnapshot.docs[0].ref;
+      await deleteDoc(docRef);
+      await addDoc(
+        collection(db, "classificacoes"),
+        classificacao.converterParaObjeto()
+      );
+    }
+
     if (usuario?.uid) computarQuizRespondido();
-  }, [usuario, computarQuizRespondido]);
+  }, [usuario]);
 
   useEffect(() => {
     if (loading) {
@@ -193,12 +195,14 @@ export default function Resultado({
         <h1>Resultado Final</h1>
         <div className={`flex items-center gap-10`}>
           <div className={`flex flex-col items-center`}>
-            {sala?.historicoPrimeiroJogador.length > 100 ? (
+            {sala?.historicoPrimeiroJogador.length > 0 ? (
               <>
-                <img
+                <Image
                   src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
                   alt="Avatar do Primeiro Jogador"
-                  className={`h-12 w-12 rounded-full`}
+                  className={`rounded-full`}
+                  width={60}
+                  height={60}
                 />
                 <div className={`flex`}>
                   <Estatistica texto="Perguntas" valor={total} />
@@ -224,10 +228,12 @@ export default function Resultado({
           <div className={`flex flex-col items-center`}>
             {sala?.historicoSegundoJogador?.length > 0 ? (
               <>
-                <img
+                <Image
                   src={sala?.segundoJogador?.imagemUrl ?? "/images/avatar.svg"}
                   alt="Avatar do Segundo Jogador"
-                  className={`h-12 w-12 rounded-full`}
+                  className={`rounded-full`}
+                  width={60}
+                  height={60}
                 />
                 <div className={`flex`}>
                   <Estatistica texto="Perguntas" valor={total} />
@@ -251,8 +257,11 @@ export default function Resultado({
             )}
           </div>
         </div>
-        <div>O vencedor foi: {obterNomeVencedor()}</div>
-        <Botao texto="Tentar Novamente" href="/" />
+        {sala?.historicoPrimeiroJogador.length !== 0 &&
+          sala?.historicoSegundoJogador.length !== 0 && (
+            <div>O vencedor foi: {obterNomeVencedor()}</div>
+          )}
+        <button onClick={() => navegarPorLink("/")}>Tentar novamente</button>
         <IconeGithub />
       </div>
     );

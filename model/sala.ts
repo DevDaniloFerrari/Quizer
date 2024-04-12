@@ -62,7 +62,6 @@ export default class Sala {
       objeto.historicoPrimeiroJogador,
       objeto.historicoSegundoJogador
     );
-    console.log(salaNova);
     return salaNova;
   }
 

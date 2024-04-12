@@ -4,6 +4,7 @@ import { Classificacao } from "@/model/classificacao";
 import Usuario from "@/model/usuario";
 import styles from "@/styles/CardClassificacao.module.css";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface CardClassificacaoProps {
@@ -36,10 +37,12 @@ export default function CardClassificacao(props: CardClassificacaoProps) {
     usuario && (
       <div className={styles.card}>
         <div>{props.posicao}</div>
-        <img
+        <Image
           src={usuario.imagemUrl || "/images/avatar.svg"}
-          alt=""
+          alt="Avatar do usuário"
           className={styles.avatar}
+          width={30}
+          height={30}
         />
         <div>{usuario.nome}</div>
         <div>{props.classificacao.totalRespostasCertas}</div>

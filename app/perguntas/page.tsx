@@ -124,17 +124,17 @@ export default function Perguntas(props: PerguntaProps) {
       };
     });
 
-    console.log(props.searchParams.idSala)
-    const sala = await getSala(props.searchParams.idSala);
-    console.log(sala)
-
-    if(usuario.uid === sala.primeiroJogador.uid){
-      sala.historicoPrimeiroJogador = historicoQuestoes
-    }else{
-      sala.historicoSegundoJogador = historicoQuestoes
+    if(props.searchParams.idSala){
+      const sala = await getSala(props.searchParams.idSala);
+      
+      if(usuario.uid === sala.primeiroJogador.uid){
+        sala.historicoPrimeiroJogador = historicoQuestoes
+      }else{
+        sala.historicoSegundoJogador = historicoQuestoes
+      }
+      
+      alterarSala(sala);
     }
-
-    alterarSala(sala);
 
     localStorage.setItem("questoes", JSON.stringify(historicoQuestoes));
 

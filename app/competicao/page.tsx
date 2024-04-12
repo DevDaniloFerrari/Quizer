@@ -15,6 +15,7 @@ import Usuario from "@/model/usuario";
 import styles from "@/styles/Competicao.module.css";
 import { CircularProgress } from "@mui/material";
 import { Unsubscribe } from "firebase/firestore";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Competicao() {
@@ -93,15 +94,21 @@ export default function Competicao() {
         <h1>Modo Competição</h1>
         <div className={`flex m-5 gap-5`}>
           {sala && (
-            <img
-              className={`h-20 w-20 rounded-full`}
+            <Image
+              alt="Imagem primeiro jogador"
+              className={`rounded-full`}
               src={sala.primeiroJogador?.imagemUrl}
+              width={20}
+              height={20}
             />
           )}
           {sala && (
-            <img
-              className={`h-20 w-20 rounded-full`}
+            <Image
+              alt="Imagem segundo jogador"
+              className={`rounded-full`}
               src={sala.segundoJogador?.imagemUrl}
+              width={20}
+              height={20}
             />
           )}
         </div>
