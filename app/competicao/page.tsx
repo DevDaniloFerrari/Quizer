@@ -98,17 +98,17 @@ export default function Competicao() {
               alt="Imagem primeiro jogador"
               className={`rounded-full`}
               src={sala.primeiroJogador?.imagemUrl}
-              width={20}
-              height={20}
+              width={60}
+              height={60}
             />
           )}
           {sala && (
             <Image
               alt="Imagem segundo jogador"
               className={`rounded-full`}
-              src={sala.segundoJogador?.imagemUrl}
-              width={20}
-              height={20}
+              src={sala.segundoJogador?.imagemUrl || "/images/avatar.svg"}
+              width={60}
+              height={60}
             />
           )}
         </div>
