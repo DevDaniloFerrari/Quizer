@@ -5,5 +5,15 @@
   align-items: center;
   height: 100vh;
   font-size: 2rem;
-  gap: 15px;
+  gap: 10px;
+}
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 2rem;
+  gap: 10px;
 }

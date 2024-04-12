@@ -9,7 +9,8 @@ import {
   onSnapshot,
   setDoc,
   deleteDoc,
-  Unsubscribe
+  Unsubscribe,
+  where,
 } from "firebase/firestore";
 import { Classificacao } from "./classificacao";
 import Sala from "./sala";
@@ -33,7 +34,7 @@ export const getClassificacoesFirebase = async () => {
   return classificacoes;
 };
 
-export const getSalaEmEspera = async () : Promise<Sala> => {
+export const getSalaEmEspera = async (): Promise<Sala> => {
   const querySnapshot = await getDocs(query(collection(db, "salas")));
   const salas = querySnapshot.docs.map((doc) =>
     Sala.criarUsandoObjeto(
@@ -44,10 +45,24 @@ export const getSalaEmEspera = async () : Promise<Sala> => {
   return salas.find((sala) => sala.aguardandoJogador);
 };
 
+export const getSala = async (idSala: string): Promise<Sala> => {
+  const querySnapshot = await getDocs(
+    query(collection(db, "salas"), where("id", "==", idSala))
+  );
+
+  const doc = querySnapshot.docs[0].data();
+
+  const sala = Sala.criarUsandoObjeto(
+    JSON.parse(JSON.stringify({ ...doc, id: doc.id }))
+  );
+
+  return sala;
+};
+
 export const criarNovaSala = async (
   usuario: Usuario,
   callback: (sala: Sala) => void
-) : Promise<Unsubscribe> => {
+): Promise<Unsubscribe> => {
   const sala = new Sala(usuario);
   const novaSala = await addDoc(
     collection(db, "salas"),
@@ -57,18 +72,44 @@ export const criarNovaSala = async (
   const docRef = doc(db, "salas", novaSala.id);
 
   const unsubscribe = onSnapshot(docRef, (doc) => {
-    callback(Sala.criarUsandoObjeto(JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))));
+    callback(
+      Sala.criarUsandoObjeto(
+        JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+      )
+    );
   });
 
-  return unsubscribe
+  return unsubscribe;
 };
 
-export const entrarNaSala = async (sala: Sala) => {
+export const escutarSala = async (
+  idSala: string,
+  callback: (sala: Sala) => void
+): Promise<Unsubscribe> => {
+  const docRef = doc(db, "salas", idSala);
+
+  const unsubscribe = onSnapshot(docRef, (doc) => {
+    callback(
+      Sala.criarUsandoObjeto(
+        JSON.parse(JSON.stringify({ ...doc.data(), id: doc.id }))
+      )
+    );
+  });
+
+  return unsubscribe;
+};
+
+export const adicionarHistoricoPrimeiroJogador = async (sala: Sala) => {
   const salaRef = doc(db, "salas", sala.id);
   await setDoc(salaRef, sala.converterParaObjeto());
 };
 
-export const sairDaSala = async (sala: Sala) => {
+export const alterarSala = async (sala: Sala) => {
+  const salaRef = doc(db, "salas", sala.id);
+  await setDoc(salaRef, sala.converterParaObjeto());
+};
+
+export const deletarSala = async (sala: Sala) => {
   const salaRef = doc(db, "salas", sala.id);
   await deleteDoc(salaRef);
 };

@@ -1,12 +1,15 @@
 "use client";
 import Questionario from "@/components/Questionario";
 import QuestaoModel from "@/model/questao";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "url";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconeGithub from "@/components/IconeGithub";
 import styles from "@/styles/Questionario.module.css";
+import { IHistoricoQuestoes } from "@/model/historicoQuestoes";
+import { alterarSala, getSala } from "@/model/firebase";
+import useAuth from "@/data/hook/useAuth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -14,15 +17,8 @@ interface PerguntaProps {
   searchParams: {
     quantidadePerguntas: string;
     duracaoPerguntas: string;
+    idSala?: string;
   };
-}
-
-export type IQuestoesHistorico = {
-  id: number;
-  enunciado: string;
-  acertou: boolean;
-  respostaVerdadeira: string;
-  respostaErrada: string;
 }
 
 export default function Perguntas(props: PerguntaProps) {
@@ -32,10 +28,19 @@ export default function Perguntas(props: PerguntaProps) {
   const [numeroQuestao, setNumeroQuestao] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [questoes, setQuestoes] = useState<QuestaoModel[]>([]);
-  const [questoesRespondidas, setQuestoesRespondidas] = useState<QuestaoModel[]>([]);
+  const [questoesRespondidas, setQuestoesRespondidas] = useState<
+    QuestaoModel[]
+  >([]);
+  const { usuario } = useAuth();
 
-  const quantidadePerguntas = Math.min(Math.max(Number(props.searchParams.quantidadePerguntas), 10), 30);
-  const duracaoPerguntas = Math.min(Math.max(Number(props.searchParams.duracaoPerguntas), 10), 60);
+  const quantidadePerguntas = Math.min(
+    Math.max(Number(props.searchParams.quantidadePerguntas), 10),
+    30
+  );
+  const duracaoPerguntas = Math.min(
+    Math.max(Number(props.searchParams.duracaoPerguntas), 10),
+    60
+  );
 
   useEffect(() => {
     obterQuestoes();
@@ -66,9 +71,8 @@ export default function Perguntas(props: PerguntaProps) {
       const idsDasQuestoes = await resposta.json();
 
       if (idsDasQuestoes.length) {
-        setarQuestoes(idsDasQuestoes.slice(0, quantidadePerguntas))
+        setarQuestoes(idsDasQuestoes.slice(0, quantidadePerguntas));
       }
-
     } catch (error) {
       alert(`Ocorreu um erro ao carregar as questões: ${error}`);
     }
@@ -81,7 +85,10 @@ export default function Perguntas(props: PerguntaProps) {
   }
 
   function questaoRespondida(questaoRespondida: QuestaoModel) {
-    setQuestoesRespondidas((questoesAntigas) => [...questoesAntigas, questaoRespondida]);
+    setQuestoesRespondidas((questoesAntigas) => [
+      ...questoesAntigas,
+      questaoRespondida,
+    ]);
     setQuestao(questaoRespondida);
     const acertou = questaoRespondida.acertou;
     setRespostasCertas(respostasCertas + (acertou ? 1 : 0));
@@ -94,12 +101,20 @@ export default function Perguntas(props: PerguntaProps) {
     finalizar();
   }
 
-  function formatarQuestoesParaHistorico(questoes, questoesRespondidas) { 
-    const questoesParaHistorico: IQuestoesHistorico[] = questoes.map((questao) => {
-      const questaoRespondida = questoesRespondidas.find((qr) => qr.id === questao.id) || questao;
-      const respostaErrada = questaoRespondida.respostas.find((x) => !x.certa && x.revelada)?.valor || '';
-      const respostaVerdadeira = questaoRespondida.respostas.find((x) => x.certa).valor;
-      
+  async function formatarQuestoesParaHistorico(
+    questoes: QuestaoModel[],
+    questoesRespondidas: QuestaoModel[]
+  ) {
+    const historicoQuestoes: IHistoricoQuestoes[] = questoes.map((questao) => {
+      const questaoRespondida =
+        questoesRespondidas.find((qr) => qr.id === questao.id) || questao;
+      const respostaErrada =
+        questaoRespondida.respostas.find((x) => !x.certa && x.revelada)
+          ?.valor || "";
+      const respostaVerdadeira = questaoRespondida.respostas.find(
+        (x) => x.certa
+      ).valor;
+
       return {
         id: questao.id,
         acertou: questaoRespondida.acertou,
@@ -108,23 +123,38 @@ export default function Perguntas(props: PerguntaProps) {
         respostaVerdadeira,
       };
     });
-  
-    localStorage.setItem('questoes', JSON.stringify(questoesParaHistorico));
-  
-    return questoesParaHistorico;
-  }
-  
 
-  function finalizar() {
-    const questoesFormatada = formatarQuestoesParaHistorico(questoes, questoesRespondidas);
+    console.log(props.searchParams.idSala)
+    const sala = await getSala(props.searchParams.idSala);
+    console.log(sala)
+
+    if(usuario.uid === sala.primeiroJogador.uid){
+      sala.historicoPrimeiroJogador = historicoQuestoes
+    }else{
+      sala.historicoSegundoJogador = historicoQuestoes
+    }
+
+    alterarSala(sala);
+
+    localStorage.setItem("questoes", JSON.stringify(historicoQuestoes));
+
+    return historicoQuestoes;
+  }
+
+  async function finalizar() {
+    const questoesFormatada = await formatarQuestoesParaHistorico(
+      questoes,
+      questoesRespondidas
+    );
 
     if (questoesFormatada.length) {
       setLoading(true);
       const url = format({
-        pathname: "/resultado",
+        pathname: `/resultado`,
         query: {
           total: questoes.length,
           certas: respostasCertas,
+          idSala: props.searchParams.idSala,
         },
       });
 
@@ -148,7 +178,7 @@ export default function Perguntas(props: PerguntaProps) {
     </>
   ) : (
     <div className={styles.loadingContainer}>
-      <CircularProgress style={{ height: 100, width: 100, color: '#33ccff' }} />
+      <CircularProgress style={{ height: 100, width: 100, color: "#33ccff" }} />
     </div>
   );
 }

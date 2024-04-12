@@ -9,14 +9,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 180px;
-    width: 180px;
+    height: 100px;
+    width: 100px;
     border-radius: 90px;
-    font-size: 4rem;
+    font-size: 2rem;
 }
 
 .texto {
     color: #ddd;
-    font-size: 1.7rem;
+    font-size: 1rem;
     font-weight: 200;
 }

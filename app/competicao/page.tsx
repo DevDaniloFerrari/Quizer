@@ -6,9 +6,9 @@ import useAuth from "@/data/hook/useAuth";
 import { navegarPorLink } from "@/functions/utils";
 import {
   criarNovaSala,
-  entrarNaSala,
+  alterarSala,
   getSalaEmEspera,
-  sairDaSala,
+  deletarSala,
 } from "@/model/firebase";
 import Sala from "@/model/sala";
 import Usuario from "@/model/usuario";
@@ -42,12 +42,12 @@ export default function Competicao() {
 
     setSala(salaEmEspera);
 
-    entrarNaSala(salaEmEspera);
+    alterarSala(salaEmEspera);
   }
 
   function cancelar(sala: Sala) {
     desinscrever();
-    sairDaSala(sala);
+    deletarSala(sala);
     setSala(undefined);
   }
 
@@ -77,7 +77,9 @@ export default function Competicao() {
           duracao={10}
           tempoEsgotado={() =>
             navegarPorLink(
-              `/perguntas?quantidadePerguntas=${10}&duracaoPerguntas=${10}`
+              `/perguntas?quantidadePerguntas=${10}&duracaoPerguntas=${10}&idSala=${
+                sala.id
+              }`
             )
           }
         />
@@ -86,7 +88,7 @@ export default function Competicao() {
   }
 
   return (
-    <Layout selecionado={'competicao'}>
+    <Layout selecionado={"competicao"}>
       <div className={styles.competicao}>
         <h1>Modo Competição</h1>
         <div className={`flex m-5 gap-5`}>

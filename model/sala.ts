@@ -1,14 +1,19 @@
+import { IHistoricoQuestoes } from "./historicoQuestoes";
 import Usuario from "./usuario";
 
 export default class Sala {
   #id: string;
   #primeiroJogador: Usuario;
   #segundoJogador: Usuario;
+  #historicoPrimeiroJogador: IHistoricoQuestoes[];
+  #historicoSegundoJogador: IHistoricoQuestoes[];
 
   constructor(primeiroJogador: Usuario, segundoJogador?: Usuario, id?: string) {
     this.#primeiroJogador = primeiroJogador;
     this.#segundoJogador = segundoJogador;
     this.#id = id;
+    this.historicoPrimeiroJogador = [];
+    this.historicoSegundoJogador = [];
   }
 
   get id() {
@@ -23,8 +28,24 @@ export default class Sala {
     return this.#segundoJogador;
   }
 
+  get historicoPrimeiroJogador() {
+    return this.#historicoPrimeiroJogador;
+  }
+
+  get historicoSegundoJogador() {
+    return this.#historicoSegundoJogador;
+  }
+
   get aguardandoJogador() {
     return this.#segundoJogador === undefined;
+  }
+
+  set historicoPrimeiroJogador(historico: IHistoricoQuestoes[]) {
+    this.#historicoPrimeiroJogador = historico;
+  }
+
+  set historicoSegundoJogador(historico: IHistoricoQuestoes[]) {
+    this.#historicoSegundoJogador = historico;
   }
 
   static criarUsandoObjeto(objeto: Sala): Sala {
@@ -40,6 +61,8 @@ export default class Sala {
       id: this.#id,
       primeiroJogador: this.#primeiroJogador,
       segundoJogador: this.#segundoJogador,
+      historicoPrimeiroJogador: this.#historicoPrimeiroJogador,
+      historicoSegundoJogador: this.#historicoSegundoJogador,
     };
   }
 }
