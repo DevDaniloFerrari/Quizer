@@ -134,18 +134,26 @@ export function AuthProvider(props: any) {
   }
 
   async function loginGoogle() {
-    setCarregando(true);
-    const resposta = await signInWithGooglePopup();
-    await configurarSessao(resposta.user);
-    router.push("/");
-    setCarregando(false);
+    try {
+      setCarregando(true);
+      const resposta = await signInWithGooglePopup();
+      await configurarSessao(resposta.user);
+      router.push("/");
+    } catch {
+      setCarregando(false);
+    } finally {
+      setCarregando(false);
+    }
   }
 
   async function logout() {
     setCarregando(true);
-    await auth.signOut();
-    await configurarSessao(null);
-    setCarregando(false);
+    try {
+      await auth.signOut();
+      await configurarSessao(null);
+    } finally {
+      setCarregando(false);
+    }
   }
 
   useEffect((): any => {
