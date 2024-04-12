@@ -20,6 +20,7 @@ import {
 import { db } from "@/firebase";
 import { escutarSala } from "@/model/firebase";
 import Sala from "@/model/sala";
+import { CircularProgress } from "@mui/material";
 
 export default function Resultado({
   searchParams,
@@ -160,13 +161,30 @@ export default function Resultado({
       (x) => x.acertou
     )?.length;
 
-    if(totalPrimeiroJogador > totalSegundoJogador)
-      return sala?.primeiroJogador.nome
+    if (totalPrimeiroJogador > totalSegundoJogador)
+      return sala?.primeiroJogador.nome;
 
-    if(totalPrimeiroJogador < totalSegundoJogador)
-      return sala?.segundoJogador.nome
+    if (totalPrimeiroJogador < totalSegundoJogador)
+      return sala?.segundoJogador.nome;
 
-    return 'Empate';
+    return "Empate";
+  }
+
+  function renderizarAguardandoResponder() {
+    return (
+      <>
+        <span className="text-sm mb-3">
+          Aguardando seu oponente terminar...
+        </span>
+        <CircularProgress
+          style={{
+            height: 50,
+            width: 50,
+            color: "#33ccff",
+          }}
+        />
+      </>
+    );
   }
 
   function renderizarModoCompeticao() {
@@ -175,50 +193,62 @@ export default function Resultado({
         <h1>Resultado Final</h1>
         <div className={`flex items-center gap-10`}>
           <div className={`flex flex-col items-center`}>
-            <img
-              src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
-              alt="Avatar do Primeiro Jogador"
-              className={`h-12 w-12 rounded-full`}
-            />
-            <div className={`flex`}>
-              <Estatistica texto="Perguntas" valor={total} />
-              <Estatistica
-                texto="Certas"
-                valor={
-                  sala?.historicoPrimeiroJogador?.filter((x) => x.acertou)
-                    ?.length
-                }
-                corFundo="#9CD2A4"
-              />
-              <Estatistica
-                texto="Percentual"
-                valor={`${percentual}%`}
-                corFundo="#DE6A33"
-              />
-            </div>
+            {sala?.historicoPrimeiroJogador.length > 100 ? (
+              <>
+                <img
+                  src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
+                  alt="Avatar do Primeiro Jogador"
+                  className={`h-12 w-12 rounded-full`}
+                />
+                <div className={`flex`}>
+                  <Estatistica texto="Perguntas" valor={total} />
+                  <Estatistica
+                    texto="Certas"
+                    valor={
+                      sala?.historicoPrimeiroJogador?.filter((x) => x.acertou)
+                        ?.length
+                    }
+                    corFundo="#9CD2A4"
+                  />
+                  <Estatistica
+                    texto="Percentual"
+                    valor={`${percentual}%`}
+                    corFundo="#DE6A33"
+                  />
+                </div>
+              </>
+            ) : (
+              renderizarAguardandoResponder()
+            )}
           </div>
           <div className={`flex flex-col items-center`}>
-            <img
-              src={sala?.segundoJogador?.imagemUrl ?? "/images/avatar.svg"}
-              alt="Avatar do Segundo Jogador"
-              className={`h-12 w-12 rounded-full`}
-            />
-            <div className={`flex`}>
-              <Estatistica texto="Perguntas" valor={total} />
-              <Estatistica
-                texto="Certas"
-                valor={
-                  sala?.historicoSegundoJogador?.filter((x) => x.acertou)
-                    ?.length
-                }
-                corFundo="#9CD2A4"
-              />
-              <Estatistica
-                texto="Percentual"
-                valor={`${percentual}%`}
-                corFundo="#DE6A33"
-              />
-            </div>
+            {sala?.historicoSegundoJogador?.length > 0 ? (
+              <>
+                <img
+                  src={sala?.segundoJogador?.imagemUrl ?? "/images/avatar.svg"}
+                  alt="Avatar do Segundo Jogador"
+                  className={`h-12 w-12 rounded-full`}
+                />
+                <div className={`flex`}>
+                  <Estatistica texto="Perguntas" valor={total} />
+                  <Estatistica
+                    texto="Certas"
+                    valor={
+                      sala?.historicoSegundoJogador?.filter((x) => x.acertou)
+                        ?.length
+                    }
+                    corFundo="#9CD2A4"
+                  />
+                  <Estatistica
+                    texto="Percentual"
+                    valor={`${percentual}%`}
+                    corFundo="#DE6A33"
+                  />
+                </div>
+              </>
+            ) : (
+              renderizarAguardandoResponder()
+            )}
           </div>
         </div>
         <div>O vencedor foi: {obterNomeVencedor()}</div>

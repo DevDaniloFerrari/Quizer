@@ -8,12 +8,18 @@ export default class Sala {
   #historicoPrimeiroJogador: IHistoricoQuestoes[];
   #historicoSegundoJogador: IHistoricoQuestoes[];
 
-  constructor(primeiroJogador: Usuario, segundoJogador?: Usuario, id?: string) {
+  constructor(
+    primeiroJogador: Usuario,
+    segundoJogador?: Usuario,
+    id?: string,
+    historicoPrimeiroJogador?: IHistoricoQuestoes[],
+    historicoSegundoJogador?: IHistoricoQuestoes[]
+  ) {
     this.#primeiroJogador = primeiroJogador;
     this.#segundoJogador = segundoJogador;
     this.#id = id;
-    this.historicoPrimeiroJogador = [];
-    this.historicoSegundoJogador = [];
+    this.#historicoPrimeiroJogador = historicoPrimeiroJogador || [];
+    this.#historicoSegundoJogador = historicoSegundoJogador || [];
   }
 
   get id() {
@@ -49,7 +55,15 @@ export default class Sala {
   }
 
   static criarUsandoObjeto(objeto: Sala): Sala {
-    return new Sala(objeto.primeiroJogador, objeto.segundoJogador, objeto.id);
+    const salaNova = new Sala(
+      objeto.primeiroJogador,
+      objeto.segundoJogador,
+      objeto.id,
+      objeto.historicoPrimeiroJogador,
+      objeto.historicoSegundoJogador
+    );
+    console.log(salaNova);
+    return salaNova;
   }
 
   adicionarSegundoJogador(usuario: Usuario) {
