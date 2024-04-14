@@ -10,6 +10,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -93,6 +94,12 @@ export default function MenuLateral({ selecionado }: IMenuLateral) {
         icone={PeopleOutlineIcon}
         somenteParaUsuarioAutenticado
         selecionado={selecionado}
+      />
+      <MenuItem
+        onClick={() => notificar("Funcionalidade em desenvolvimento.")}
+        texto="Seja um Apoiador"
+        value="apoiador"
+        icone={FavoriteBorderIcon}
       />
       <div className={`mt-auto`}>
         <Divider />
