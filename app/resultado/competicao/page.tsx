@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import domtoimage from "dom-to-image";
 import Estatistica from "@/components/Estatistica";
 import IconeGithub from "@/components/IconeGithub";
@@ -20,6 +20,7 @@ import Sala from "@/model/sala";
 import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 import { navegarPorLink } from "@/functions/utils";
+import { IHistoricoQuestoes } from "@/model/historicoQuestoes";
 
 export default function Resultado({
   searchParams,
@@ -27,9 +28,7 @@ export default function Resultado({
   searchParams: { total: number; certas: number; idSala: string };
 }) {
   const { total, certas } = searchParams;
-  const percentual = Math.round((certas / total) * 100);
   const [loading, setLoading] = useState(false);
-  const [historicoAberto, setHistoricoAberto] = useState(false);
   const { usuario } = useAuth();
   const [sala, setSala] = useState<Sala>();
 
@@ -101,14 +100,6 @@ export default function Resultado({
     }
   };
 
-  const loadingScreenshot = useCallback(() => {
-    setLoading(!loading);
-  }, [loading]);
-
-  const abrirHistoricoPartida = useCallback(() => {
-    setHistoricoAberto(!historicoAberto);
-  }, [historicoAberto]);
-
   function obterNomeVencedor() {
     const totalPrimeiroJogador = sala?.historicoPrimeiroJogador?.filter(
       (x) => x.acertou
@@ -144,72 +135,44 @@ export default function Resultado({
     );
   }
 
+  function renderizarResultadoJogador(historico: IHistoricoQuestoes[]) {
+    const certas = sala?.historicoPrimeiroJogador?.filter(
+      (x) => x.acertou
+    )?.length;
+      const percentual = Math.round((certas / total) * 100);
+    return historico?.length > 0 ? (
+      <>
+        <Image
+          src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
+          alt="Avatar do Primeiro Jogador"
+          className={`rounded-full`}
+          width={60}
+          height={60}
+        />
+        <div className={`flex`}>
+          <Estatistica texto="Perguntas" valor={total} />
+          <Estatistica texto="Certas" valor={certas} corFundo="#9CD2A4" />
+          <Estatistica
+            texto="Percentual"
+            valor={`${percentual}%`}
+            corFundo="#DE6A33"
+          />
+        </div>
+      </>
+    ) : (
+      renderizarAguardandoResponder()
+    );
+  }
 
   return (
     <div className={styles.resultado}>
       <h1>Resultado Final</h1>
       <div className={`flex items-center gap-10`}>
         <div className={`flex flex-col items-center`}>
-          {sala?.historicoPrimeiroJogador.length > 0 ? (
-            <>
-              <Image
-                src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
-                alt="Avatar do Primeiro Jogador"
-                className={`rounded-full`}
-                width={60}
-                height={60}
-              />
-              <div className={`flex`}>
-                <Estatistica texto="Perguntas" valor={total} />
-                <Estatistica
-                  texto="Certas"
-                  valor={
-                    sala?.historicoPrimeiroJogador?.filter((x) => x.acertou)
-                      ?.length
-                  }
-                  corFundo="#9CD2A4"
-                />
-                <Estatistica
-                  texto="Percentual"
-                  valor={`${percentual}%`}
-                  corFundo="#DE6A33"
-                />
-              </div>
-            </>
-          ) : (
-            renderizarAguardandoResponder()
-          )}
+          {renderizarResultadoJogador(sala?.historicoPrimeiroJogador)}
         </div>
         <div className={`flex flex-col items-center`}>
-          {sala?.historicoSegundoJogador?.length > 0 ? (
-            <>
-              <Image
-                src={sala?.segundoJogador?.imagemUrl ?? "/images/avatar.svg"}
-                alt="Avatar do Segundo Jogador"
-                className={`rounded-full`}
-                width={60}
-                height={60}
-              />
-              <div className={`flex`}>
-                <Estatistica texto="Perguntas" valor={total} />
-                <Estatistica
-                  texto="Certas"
-                  valor={
-                    sala?.historicoSegundoJogador?.filter((x) => x.acertou)
-                      ?.length
-                  }
-                  corFundo="#9CD2A4"
-                />
-                <Estatistica
-                  texto="Percentual"
-                  valor={`${percentual}%`}
-                  corFundo="#DE6A33"
-                />
-              </div>
-            </>
-          ) : (
-            renderizarAguardandoResponder()
-          )}
+          {renderizarResultadoJogador(sala?.historicoSegundoJogador)}
         </div>
       </div>
       {sala?.historicoPrimeiroJogador.length !== 0 &&
