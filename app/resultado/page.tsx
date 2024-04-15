@@ -23,8 +23,6 @@ import Sala from "@/model/sala";
 import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 import { navegarPorLink } from "@/functions/utils";
-import ResultadoModoCompeticao from "@/components/ResultadoModoCompeticao";
-import ResultadoModoNormal from "@/components/ResultadoModoNormal";
 
 export default function Resultado({
   searchParams,
@@ -32,6 +30,7 @@ export default function Resultado({
   searchParams: { total: number; certas: number; idSala: string };
 }) {
   const { total, certas } = searchParams;
+  const percentual = Math.round((certas / total) * 100);
   const [loading, setLoading] = useState(false);
   const [historicoAberto, setHistoricoAberto] = useState(false);
   const { usuario } = useAuth();
@@ -113,9 +112,162 @@ export default function Resultado({
     setHistoricoAberto(!historicoAberto);
   }, [historicoAberto]);
 
-  return searchParams.idSala ? (
-    <ResultadoModoCompeticao />
-  ) : (
-    <ResultadoModoNormal total={total} certas={certas}/>
-  );
+  const renderizarBotoes = () => {
+    return (
+      <>
+        <Botao texto="Tentar Novamente" href="/" />
+        <Botao texto="Histórico de Partida" onClick={abrirHistoricoPartida} />
+        <Botao texto="Baixar Resultado" onClick={loadingScreenshot} />
+      </>
+    );
+  };
+
+  function renderizarModoNormal() {
+    return (
+      <div className={styles.resultado}>
+        <h1>Resultado Final</h1>
+        <div style={{ display: "flex" }}>
+          <Estatistica texto="Perguntas" valor={total} />
+          <Estatistica texto="Certas" valor={certas} corFundo="#9CD2A4" />
+          <Estatistica
+            texto="Percentual"
+            valor={`${percentual}%`}
+            corFundo="#DE6A33"
+          />
+        </div>
+        {!loading ? renderizarBotoes() : null}
+        {historicoAberto ? (
+          <GenericDrawer
+            variant={"temporary"}
+            title="Histórico da Partida"
+            status={historicoAberto}
+            onClose={abrirHistoricoPartida}
+            otherProps={{
+              PaperProps: { sx: { backgroundColor: "#5e44d5", width: "30%" } },
+            }}
+          >
+            <Historico />
+          </GenericDrawer>
+        ) : null}
+        <IconeGithub />
+      </div>
+    );
+  }
+
+  function obterNomeVencedor() {
+    const totalPrimeiroJogador = sala?.historicoPrimeiroJogador?.filter(
+      (x) => x.acertou
+    )?.length;
+
+    const totalSegundoJogador = sala?.historicoSegundoJogador?.filter(
+      (x) => x.acertou
+    )?.length;
+
+    if (totalPrimeiroJogador > totalSegundoJogador)
+      return sala?.primeiroJogador.nome;
+
+    if (totalPrimeiroJogador < totalSegundoJogador)
+      return sala?.segundoJogador.nome;
+
+    return "Empate";
+  }
+
+  function renderizarAguardandoResponder() {
+    return (
+      <>
+        <span className="text-sm mb-3">
+          Aguardando seu oponente terminar...
+        </span>
+        <CircularProgress
+          style={{
+            height: 50,
+            width: 50,
+            color: "#33ccff",
+          }}
+        />
+      </>
+    );
+  }
+
+  function renderizarModoCompeticao() {
+    return (
+      <div className={styles.resultado}>
+        <h1>Resultado Final</h1>
+        <div className={`flex items-center gap-10`}>
+          <div className={`flex flex-col items-center`}>
+            {sala?.historicoPrimeiroJogador.length > 0 ? (
+              <>
+                <Image
+                  src={sala?.primeiroJogador?.imagemUrl ?? "/images/avatar.svg"}
+                  alt="Avatar do Primeiro Jogador"
+                  className={`rounded-full`}
+                  width={60}
+                  height={60}
+                />
+                <div className={`flex`}>
+                  <Estatistica texto="Perguntas" valor={total} />
+                  <Estatistica
+                    texto="Certas"
+                    valor={
+                      sala?.historicoPrimeiroJogador?.filter((x) => x.acertou)
+                        ?.length
+                    }
+                    corFundo="#9CD2A4"
+                  />
+                  <Estatistica
+                    texto="Percentual"
+                    valor={`${percentual}%`}
+                    corFundo="#DE6A33"
+                  />
+                </div>
+              </>
+            ) : (
+              renderizarAguardandoResponder()
+            )}
+          </div>
+          <div className={`flex flex-col items-center`}>
+            {sala?.historicoSegundoJogador?.length > 0 ? (
+              <>
+                <Image
+                  src={sala?.segundoJogador?.imagemUrl ?? "/images/avatar.svg"}
+                  alt="Avatar do Segundo Jogador"
+                  className={`rounded-full`}
+                  width={60}
+                  height={60}
+                />
+                <div className={`flex`}>
+                  <Estatistica texto="Perguntas" valor={total} />
+                  <Estatistica
+                    texto="Certas"
+                    valor={
+                      sala?.historicoSegundoJogador?.filter((x) => x.acertou)
+                        ?.length
+                    }
+                    corFundo="#9CD2A4"
+                  />
+                  <Estatistica
+                    texto="Percentual"
+                    valor={`${percentual}%`}
+                    corFundo="#DE6A33"
+                  />
+                </div>
+              </>
+            ) : (
+              renderizarAguardandoResponder()
+            )}
+          </div>
+        </div>
+        {sala?.historicoPrimeiroJogador.length !== 0 &&
+          sala?.historicoSegundoJogador.length !== 0 && (
+            <div>O vencedor foi: {obterNomeVencedor()}</div>
+          )}
+        <button onClick={() => navegarPorLink("/")}>Tentar novamente</button>
+        <IconeGithub />
+      </div>
+    );
+  }
+
+  return searchParams.idSala
+    ? renderizarModoCompeticao()
+    : renderizarModoNormal();
 }
