@@ -124,15 +124,15 @@ export default function Perguntas(props: PerguntaProps) {
       };
     });
 
-    if(props.searchParams.idSala){
+    if (props.searchParams.idSala) {
       const sala = await getSala(props.searchParams.idSala);
-      
-      if(usuario.uid === sala.primeiroJogador.uid){
-        sala.historicoPrimeiroJogador = historicoQuestoes
-      }else{
-        sala.historicoSegundoJogador = historicoQuestoes
+
+      if (usuario.uid === sala.primeiroJogador.uid) {
+        sala.historicoPrimeiroJogador = historicoQuestoes;
+      } else {
+        sala.historicoSegundoJogador = historicoQuestoes;
       }
-      
+
       alterarSala(sala);
     }
 
@@ -149,8 +149,16 @@ export default function Perguntas(props: PerguntaProps) {
 
     if (questoesFormatada.length) {
       setLoading(true);
-      const url = format({
-        pathname: `/resultado`,
+      const url = obterUrl();
+
+      router.push(url);
+    }
+  }
+
+  function obterUrl() {
+    if (props.searchParams.idSala)
+      return format({
+        pathname: `/resultado/competicao`,
         query: {
           total: questoes.length,
           certas: respostasCertas,
@@ -158,8 +166,13 @@ export default function Perguntas(props: PerguntaProps) {
         },
       });
 
-      router.push(url);
-    }
+    return format({
+      pathname: `/resultado/normal`,
+      query: {
+        total: questoes.length,
+        certas: respostasCertas,
+      },
+    });
   }
 
   return questao ? (
