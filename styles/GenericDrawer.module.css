@@ -44,3 +44,20 @@
     gap: 20px;
     height: 100px;
 }
+
+.main::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main::-webkit-scrollbar-track {
+    background: #888;
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: aqua;
+    border-radius: 4px;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+}
