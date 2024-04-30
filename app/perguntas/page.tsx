@@ -78,6 +78,18 @@ export default function Perguntas(props: PerguntaProps) {
     }
   }
 
+  function playAudio(audio: HTMLAudioElement) {
+    audio.currentTime = 0;
+    audio.play();
+  };
+
+  function obterAudio(acertou) {
+    if(acertou) {
+      return playAudio(new Audio("/audio/correct.mp3"));
+    }
+    return playAudio(new Audio("/audio/error.mp3"))
+  }
+
   function carregarQuestao(questao: QuestaoModel) {
     const idx = questoes.findIndex((item) => item === questao);
     setQuestao(questao);
@@ -89,9 +101,10 @@ export default function Perguntas(props: PerguntaProps) {
       ...questoesAntigas,
       questaoRespondida,
     ]);
+
+    obterAudio(questaoRespondida.acertou);
     setQuestao(questaoRespondida);
-    const acertou = questaoRespondida.acertou;
-    setRespostasCertas(respostasCertas + (acertou ? 1 : 0));
+    setRespostasCertas(respostasCertas + (questaoRespondida.acertou ? 1 : 0));
   }
 
   function idProximaPergunta() {
